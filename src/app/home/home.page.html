@@ -2,7 +2,10 @@
   <ion-toolbar>
     <ion-title>Home</ion-title>
     <ion-buttons slot="end">
-      <ion-button data-test="add-checklist-button" (click)="addChecklist()">
+      <ion-button
+        data-test="add-checklist-button"
+        (click)="openAddChecklistModal()"
+      >
         <ion-icon name="add" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -10,3 +13,9 @@
 </ion-header>
 
 <ion-content> </ion-content>
+
+<ion-modal [isOpen]="isAddingChecklist">
+  <ng-template>
+    <app-add-checklist></app-add-checklist>
+  </ng-template>
+</ion-modal>

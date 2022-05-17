@@ -7,7 +7,11 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomePage {
+  isAddingChecklist = false;
+
   constructor() {}
 
-  addChecklist() {}
+  openAddChecklistModal() {
+    this.isAddingChecklist = true;
+  }
 }
