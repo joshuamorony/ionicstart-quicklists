@@ -1,11 +1,16 @@
 <ion-header>
   <ion-toolbar>
     <ion-title> Create Checklist </ion-title>
+    <ion-buttons slot="end">
+      <ion-button data-test="cancel-checklist-button" (click)="cancel()">
+        <ion-icon name="close" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <form formGroupName="checklistForm">
+  <form formGroupName="checklistForm" (ngSubmit)="save()">
     <ion-item>
       <ion-label> Title </ion-label>
       <ion-input
@@ -14,13 +19,12 @@
         type="text"
       ></ion-input>
     </ion-item>
+    <ion-button
+      type="submit"
+      data-test="save-checklist-button"
+      [disabled]="!checklistForm.valid"
+    >
+      Save
+    </ion-button>
   </form>
-
-  <ion-button
-    data-test="save-checklist-button"
-    (click)="save()"
-    [disabled]="!checklistForm.valid"
-  >
-    Save
-  </ion-button>
 </ion-content>
