@@ -1,20 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
 import { IonicModule } from '@ionic/angular';
 
-import { HomePage } from './home.page';
+import { AddChecklistComponent } from './add-checklist.component';
 
-describe('HomePage', () => {
-  let component: HomePage;
-  let fixture: ComponentFixture<HomePage>;
+describe('AddChecklistComponent', () => {
+  let component: AddChecklistComponent;
+  let fixture: ComponentFixture<AddChecklistComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [HomePage],
-      imports: [IonicModule.forRoot()],
+      declarations: [ AddChecklistComponent ],
+      imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(HomePage);
+    fixture = TestBed.createComponent(AddChecklistComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));
