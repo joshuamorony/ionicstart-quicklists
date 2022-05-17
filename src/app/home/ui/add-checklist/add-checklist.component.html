@@ -1,3 +1,9 @@
-<p>
-  add-checklist works!
-</p>
+<ion-content>
+  <ion-button
+    data-test="save-checklist-button"
+    (click)="save()"
+    [disabled]="!checklistForm.valid"
+  >
+    Save
+  </ion-button>
+</ion-content>
