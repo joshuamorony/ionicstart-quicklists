@@ -10,3 +10,5 @@ export const getChecklistItems = () => cy.get('[data-test="checklist-item"]');
 export const getTitleField = () => cy.get('[data-test="title-input"] input');
 export const getSaveChecklistButton = () =>
   cy.get('[data-test="save-checklist-button"]');
+export const getCancelChecklistButton = () =>
+  cy.get('[data-test="cancel-checklist-button"]');

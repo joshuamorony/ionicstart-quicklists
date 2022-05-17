@@ -1,5 +1,6 @@
 import {
   getAddChecklistButton,
+  getCancelChecklistButton,
   getChecklistItems,
   getSaveChecklistButton,
   getTitleField,
@@ -19,5 +20,15 @@ describe('Home', () => {
     getSaveChecklistButton().click();
 
     getChecklistItems().should('contain.text', testTitle);
+  });
+
+  it('should be able to cancel adding a checklist', () => {
+    const testTitle = 'preflight';
+
+    getAddChecklistButton().click();
+    getTitleField().type(testTitle);
+    getCancelChecklistButton().click();
+
+    getChecklistItems().should('not.contain.text', testTitle);
   });
 });
