@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title data-test="form-modal-title">{{ title }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="formGroup" (ngSubmit)="save.emit(true)">
+    <ion-item *ngFor="let control of formGroup.controls | keyvalue">
+      <ion-label>{{ control.key }}</ion-label>
+      <ion-input type="text" [formControlName]="control.key"></ion-input>
+    </ion-item>
+    <ion-button
+      data-test="form-modal-save"
+      expand="full"
+      type="submit"
+      [disabled]="!formGroup.valid"
+    >
+      <ion-icon slot="start" name="save-outline"></ion-icon> Save
+    </ion-button>
+  </form>
+</ion-content>
