@@ -38,6 +38,18 @@ describe('AddChecklistComponent', () => {
       expect(component.checklistForm.valid).toBe(false);
     });
 
+    it('title control should be bound in template', () => {
+      const titleInput = fixture.debugElement.query(
+        By.css('[data-test="checklist-title-input"]')
+      );
+
+      const expectedFormControlName = 'title';
+      const attachedFormControlName = titleInput.attributes.formControlName;
+
+      expect(expectedFormControlName).toEqual(attachedFormControlName);
+      expect(component.checklistForm.get(attachedFormControlName)).toBeTruthy();
+    });
+
     it('should disable save button if form data is not valid', () => {
       component.checklistForm.reset();
       fixture.detectChanges();

@@ -5,6 +5,17 @@
 </ion-header>
 
 <ion-content>
+  <form formGroupName="checklistForm">
+    <ion-item>
+      <ion-label> Title </ion-label>
+      <ion-input
+        data-test="checklist-title-input"
+        formControlName="title"
+        type="text"
+      ></ion-input>
+    </ion-item>
+  </form>
+
   <ion-button
     data-test="save-checklist-button"
     (click)="save()"
