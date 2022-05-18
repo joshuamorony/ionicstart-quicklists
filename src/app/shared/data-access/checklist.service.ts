@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
+import { Checklist } from '../interfaces/checklist';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ChecklistService {
+  constructor() {}
 
-  constructor() { }
+  add(checklist: Checklist) {}
 }

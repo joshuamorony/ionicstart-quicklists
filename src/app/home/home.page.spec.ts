@@ -1,8 +1,11 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
+import { ChecklistService } from '../shared/data-access/checklist.service';
 
 import { HomePage } from './home.page';
+
+jest.mock('../shared/data-access/checklist.service');
 
 describe('HomePage', () => {
   let component: HomePage;
@@ -12,6 +15,7 @@ describe('HomePage', () => {
     TestBed.configureTestingModule({
       declarations: [HomePage],
       imports: [IonicModule.forRoot(), ReactiveFormsModule],
+      providers: [ChecklistService],
     }).compileComponents();
 
     fixture = TestBed.createComponent(HomePage);
@@ -30,6 +34,19 @@ describe('HomePage', () => {
       titleControl.setValue('');
 
       expect(titleControl.valid).toBe(false);
+    });
+  });
+
+  describe('addChecklist()', () => {
+    it('should call the add() method of the ChecklistService with the form data', () => {
+      const checklistService =
+        fixture.debugElement.injector.get(ChecklistService);
+
+      component.addChecklist();
+
+      expect(checklistService.add).toHaveBeenCalledWith(
+        component.checklistForm.value
+      );
     });
   });
 });

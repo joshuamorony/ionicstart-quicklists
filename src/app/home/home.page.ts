@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ChecklistService } from '../shared/data-access/checklist.service';
 
 @Component({
   selector: 'app-home',
@@ -12,5 +13,12 @@ export class HomePage {
     title: ['', Validators.required],
   });
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private checklistService: ChecklistService
+  ) {}
+
+  addChecklist() {
+    this.checklistService.add(this.checklistForm.value);
+  }
 }
