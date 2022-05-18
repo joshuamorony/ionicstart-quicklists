@@ -1,3 +1,5 @@
-<p>
-  checklist-list works!
-</p>
+<ion-list>
+  <ion-item data-test="checklist-item" *ngFor="let checklist of checklists">
+    <ion-label>{{ checklist.title }}</ion-label>
+  </ion-item>
+</ion-list>
