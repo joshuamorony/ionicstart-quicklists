@@ -71,18 +71,18 @@ describe('FormModalComponent', () => {
       expect(inputs.length).toBe(3);
     });
 
-    it('should bind the inputs to the controls', () => {
+    it('should bind the inputs to the controls', async () => {
+      const testValue = 'hello';
+
       component.formGroup = new FormGroup({
-        title: new FormControl(''),
+        title: new FormControl(testValue),
       });
 
       fixture.detectChanges();
 
-      const input = fixture.debugElement.query(
-        By.css('ion-input[formControlName="title"]')
-      );
+      const input = fixture.debugElement.query(By.css('ion-input'));
 
-      expect(input).toBeTruthy();
+      expect(input.componentInstance.value).toEqual(testValue);
     });
 
     it('should use form control name as label for input', () => {
