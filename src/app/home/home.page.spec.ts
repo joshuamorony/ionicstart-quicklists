@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { IonicModule } from '@ionic/angular';
 
@@ -11,7 +12,7 @@ describe('HomePage', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [HomePage],
-      imports: [IonicModule.forRoot()],
+      imports: [IonicModule.forRoot(), ReactiveFormsModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(HomePage);
@@ -21,5 +22,15 @@ describe('HomePage', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('checklistForm', () => {
+    it('should require a title field', () => {
+      const titleControl = component.checklistForm.get('title');
+
+      titleControl.setValue('');
+
+      expect(titleControl.valid).toBe(false);
+    });
   });
 });

@@ -13,6 +13,9 @@
 
 <ion-modal trigger="open-modal-trigger">
   <ng-template>
-    <app-add-checklist></app-add-checklist>
+    <app-form-modal
+      title="Create checklist"
+      [formGroup]="checklistForm"
+    ></app-form-modal>
   </ng-template>
 </ion-modal>

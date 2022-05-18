@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-home',
@@ -7,5 +8,9 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomePage {
-  constructor() {}
+  checklistForm = this.fb.group({
+    title: ['', Validators.required],
+  });
+
+  constructor(private fb: FormBuilder) {}
 }
