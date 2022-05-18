@@ -71,6 +71,17 @@ describe('FormModalComponent', () => {
     expect(modalCtrl.dismiss).toHaveBeenCalled();
   });
 
+  it('should dismiss when cancel button is clicked', () => {
+    const modalCtrl = fixture.debugElement.injector.get(ModalController);
+
+    const cancelButton = fixture.debugElement.query(
+      By.css('[data-test="form-modal-cancel"]')
+    );
+    cancelButton.nativeElement.click();
+
+    expect(modalCtrl.dismiss).toHaveBeenCalled();
+  });
+
   describe('@Input() formGroup', () => {
     it('should render a text input for each control', () => {
       component.formGroup = new FormGroup({

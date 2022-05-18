@@ -24,6 +24,10 @@ export class FormModalComponent {
 
   handleSave() {
     this.save.emit(true);
+    this.dismiss();
+  }
+
+  dismiss() {
     this.modalCtrl.dismiss();
   }
 }
