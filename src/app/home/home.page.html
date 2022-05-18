@@ -16,6 +16,7 @@
     <app-form-modal
       title="Create checklist"
       [formGroup]="checklistForm"
+      (save)="addChecklist()"
     ></app-form-modal>
   </ng-template>
 </ion-modal>
