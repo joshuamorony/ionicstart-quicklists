@@ -1,4 +1,5 @@
 // Shared
+export const getFormModal = () => cy.get('app-form-modal');
 
 // Home
 export const navigateToHomePage = () => cy.visit('/');

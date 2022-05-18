@@ -9,7 +9,9 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content> </ion-content>
+<ion-content>
+  <app-checklist-list [checklists]="checklists$ | async"></app-checklist-list>
+</ion-content>
 
 <ion-modal trigger="open-modal-trigger">
   <ng-template>

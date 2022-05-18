@@ -9,6 +9,8 @@ import { ChecklistService } from '../shared/data-access/checklist.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomePage {
+  checklists$ = this.checklistService.getChecklists();
+
   checklistForm = this.fb.group({
     title: ['', Validators.required],
   });

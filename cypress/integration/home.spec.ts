@@ -2,6 +2,7 @@ import {
   getAddChecklistButton,
   getCancelButton,
   getChecklistItems,
+  getFormModal,
   getSaveButton,
   getTitleField,
   navigateToHomePage,
@@ -16,19 +17,16 @@ describe('Home', () => {
     const testTitle = 'preflight';
 
     getAddChecklistButton().click();
-    getTitleField().type(testTitle);
+    getTitleField().type(testTitle, { delay: 0 });
     getSaveButton().click();
 
     getChecklistItems().should('contain.text', testTitle);
   });
 
   it('should be able to cancel adding a checklist', () => {
-    const testTitle = 'preflight';
-
     getAddChecklistButton().click();
-    getTitleField().type(testTitle);
     getCancelButton().click();
 
-    getChecklistItems().should('not.contain.text', testTitle);
+    getFormModal().should('not.exist');
   });
 });
