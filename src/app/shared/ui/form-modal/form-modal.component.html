@@ -8,7 +8,11 @@
   <form [formGroup]="formGroup" (ngSubmit)="save.emit(true)">
     <ion-item *ngFor="let control of formGroup.controls | keyvalue">
       <ion-label>{{ control.key }}</ion-label>
-      <ion-input type="text" [formControlName]="control.key"></ion-input>
+      <ion-input
+        type="text"
+        [attr.data-test]="control.key"
+        [formControlName]="control.key"
+      ></ion-input>
     </ion-item>
     <ion-button
       data-test="form-modal-save"

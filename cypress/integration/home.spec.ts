@@ -1,8 +1,8 @@
 import {
   getAddChecklistButton,
-  getCancelChecklistButton,
+  getCancelButton,
   getChecklistItems,
-  getSaveChecklistButton,
+  getSaveButton,
   getTitleField,
   navigateToHomePage,
 } from '../support/utils';
@@ -17,7 +17,7 @@ describe('Home', () => {
 
     getAddChecklistButton().click();
     getTitleField().type(testTitle);
-    getSaveChecklistButton().click();
+    getSaveButton().click();
 
     getChecklistItems().should('contain.text', testTitle);
   });
@@ -27,7 +27,7 @@ describe('Home', () => {
 
     getAddChecklistButton().click();
     getTitleField().type(testTitle);
-    getCancelChecklistButton().click();
+    getCancelButton().click();
 
     getChecklistItems().should('not.contain.text', testTitle);
   });
