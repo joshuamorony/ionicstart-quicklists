@@ -5,7 +5,7 @@
 </ion-header>
 
 <ion-content>
-  <form [formGroup]="formGroup" (ngSubmit)="save.emit(true)">
+  <form [formGroup]="formGroup" (ngSubmit)="handleSave()">
     <ion-item *ngFor="let control of formGroup.controls | keyvalue">
       <ion-label>{{ control.key }}</ion-label>
       <ion-input

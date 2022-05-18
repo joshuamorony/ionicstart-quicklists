@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { subscribeSpyTo } from '@hirez_io/observer-spy';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, ModalController } from '@ionic/angular';
 
 import { FormModalComponent } from './form-modal.component';
 
@@ -20,6 +20,14 @@ describe('FormModalComponent', () => {
     TestBed.configureTestingModule({
       declarations: [FormModalComponent],
       imports: [IonicModule.forRoot(), ReactiveFormsModule],
+      providers: [
+        {
+          provide: ModalController,
+          useValue: {
+            dismiss: jest.fn(),
+          },
+        },
+      ],
     })
       .overrideComponent(FormModalComponent, {
         set: { changeDetection: ChangeDetectionStrategy.Default },
@@ -52,6 +60,15 @@ describe('FormModalComponent', () => {
     );
 
     expect(saveButton.componentInstance.disabled).toBe(true);
+  });
+
+  it('should dismiss when form is submitted', () => {
+    const modalCtrl = fixture.debugElement.injector.get(ModalController);
+
+    const form = fixture.debugElement.query(By.css('form'));
+    form.triggerEventHandler('ngSubmit', null);
+
+    expect(modalCtrl.dismiss).toHaveBeenCalled();
   });
 
   describe('@Input() formGroup', () => {

@@ -6,6 +6,7 @@ import {
   Output,
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-form-modal',
@@ -19,5 +20,10 @@ export class FormModalComponent {
 
   @Output() save = new EventEmitter<boolean>();
 
-  constructor() {}
+  constructor(private modalCtrl: ModalController) {}
+
+  handleSave() {
+    this.save.emit(true);
+    this.modalCtrl.dismiss();
+  }
 }
