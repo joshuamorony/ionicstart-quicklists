@@ -7,8 +7,6 @@ import { ChecklistService } from '../shared/data-access/checklist.service';
 
 import { ChecklistPage } from './checklist.page';
 
-jest.mock('../shared/data-access/checklist.service');
-
 describe('ChecklistPage', () => {
   let component: ChecklistPage;
   let fixture: ComponentFixture<ChecklistPage>;
@@ -33,7 +31,12 @@ describe('ChecklistPage', () => {
             ),
           },
         },
-        ChecklistService,
+        {
+          provide: ChecklistService,
+          useValue: {
+            getChecklistById: jest.fn().mockReturnValue(of(testChecklist)),
+          },
+        },
       ],
     }).compileComponents();
 
