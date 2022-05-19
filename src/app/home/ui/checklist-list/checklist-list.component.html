@@ -1,5 +1,11 @@
 <ion-list>
-  <ion-item data-test="checklist-item" *ngFor="let checklist of checklists">
+  <ion-item
+    data-test="checklist-item"
+    *ngFor="let checklist of checklists"
+    button
+    routerLink="/checklist/{{ checklist.id }}"
+    routerDirection="forward"
+  >
     <ion-label>{{ checklist.title }}</ion-label>
   </ion-item>
 </ion-list>
