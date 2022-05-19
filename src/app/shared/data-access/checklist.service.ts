@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 import { Checklist } from '../interfaces/checklist';
 
 @Injectable({
@@ -12,6 +12,13 @@ export class ChecklistService {
 
   getChecklists() {
     return this.checklists$.asObservable();
+  }
+
+  getChecklistById(id: string) {
+    return of({
+      id: '',
+      title: '',
+    });
   }
 
   add(checklist: Omit<Checklist, 'id'>) {
