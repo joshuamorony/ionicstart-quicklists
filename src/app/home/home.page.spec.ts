@@ -4,6 +4,7 @@ import { IonicModule } from '@ionic/angular';
 import { ChecklistService } from '../shared/data-access/checklist.service';
 
 import { HomePage } from './home.page';
+import { MockChecklistComponent } from './ui/checklist-list/checklist-list.component.spec';
 
 jest.mock('../shared/data-access/checklist.service');
 
@@ -13,7 +14,7 @@ describe('HomePage', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [HomePage],
+      declarations: [HomePage, MockChecklistComponent],
       imports: [IonicModule.forRoot(), ReactiveFormsModule],
       providers: [ChecklistService],
     }).compileComponents();
