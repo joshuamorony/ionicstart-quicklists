@@ -1,9 +1,11 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Checklist</ion-title>
+    <ion-title
+      data-test="checklist-detail-title"
+      *ngIf="checklist$ | async as checklist"
+      >{{ checklist.title }}</ion-title
+    >
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-
-</ion-content>
+<ion-content> </ion-content>
