@@ -6,6 +6,16 @@ import { ChecklistService } from './checklist.service';
 describe('ChecklistService', () => {
   let service: ChecklistService;
 
+  const testChecklistOne = {
+    id: 'abc',
+    title: 'abc',
+  };
+
+  const testChecklistTwo = {
+    id: '123',
+    title: '123',
+  };
+
   beforeEach(() => {
     TestBed.configureTestingModule({});
     service = TestBed.inject(ChecklistService);
@@ -19,6 +29,18 @@ describe('ChecklistService', () => {
     it('should emit an empty array initially', () => {
       const observerSpy = subscribeSpyTo(service.getChecklists());
       expect(observerSpy.getLastValue()).toEqual([]);
+    });
+  });
+
+  describe('getChecklistById()', () => {
+    it('should return the checklist matching the id', () => {
+      service.add(testChecklistOne);
+      service.add(testChecklistTwo);
+
+      const result = service.getChecklistById(testChecklistTwo.id);
+      const observerSpy = subscribeSpyTo(result);
+
+      expect(observerSpy.getLastValue()).toEqual(testChecklistTwo);
     });
   });
 
