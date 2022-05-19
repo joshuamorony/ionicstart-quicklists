@@ -24,7 +24,7 @@ describe('ChecklistService', () => {
 
   describe('add()', () => {
     it('should add to existing checklists and emit on checklists$', () => {
-      const testChecklist = { title: 'hello' };
+      const testChecklist = { id: '1', title: 'hello' };
       const observerSpy = subscribeSpyTo(service.getChecklists());
 
       service.add(testChecklist);
