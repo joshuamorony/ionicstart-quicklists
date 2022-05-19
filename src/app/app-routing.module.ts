@@ -12,6 +12,10 @@ const routes: Routes = [
     redirectTo: 'home',
     pathMatch: 'full',
   },
+  {
+    path: 'checklist/:id',
+    loadChildren: () => import('./checklist/checklist.module').then( m => m.ChecklistPageModule)
+  },
 ];
 
 @NgModule({
