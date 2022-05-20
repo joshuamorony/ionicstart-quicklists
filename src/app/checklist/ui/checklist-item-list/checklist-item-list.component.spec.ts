@@ -1,9 +1,18 @@
-import { ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { IonicModule } from '@ionic/angular';
+import { ChecklistItem } from 'src/app/shared/interfaces/checklist';
 
 import { ChecklistItemListComponent } from './checklist-item-list.component';
+
+@Component({
+  selector: 'app-checklist-item-list',
+  template: '',
+})
+export class MockChecklistItemListComponent {
+  @Input() checklistItems: ChecklistItem[];
+}
 
 describe('ChecklistItemListComponent', () => {
   let component: ChecklistItemListComponent;

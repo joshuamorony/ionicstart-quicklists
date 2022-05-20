@@ -8,6 +8,7 @@ import { ChecklistPageRoutingModule } from './checklist-routing.module';
 
 import { ChecklistPage } from './checklist.page';
 import { FormModalComponentModule } from '../shared/ui/form-modal/form-modal.module';
+import { ChecklistItemListComponentModule } from './ui/checklist-item-list/checklist-item-list.module';
 
 @NgModule({
   imports: [
@@ -16,6 +17,7 @@ import { FormModalComponentModule } from '../shared/ui/form-modal/form-modal.mod
     IonicModule,
     ChecklistPageRoutingModule,
     FormModalComponentModule,
+    ChecklistItemListComponentModule,
   ],
   declarations: [ChecklistPage],
 })

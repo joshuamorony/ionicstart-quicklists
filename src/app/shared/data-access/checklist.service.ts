@@ -21,10 +21,11 @@ export class ChecklistService {
     );
   }
 
-  add(checklist: Omit<Checklist, 'id'>) {
+  add(checklist: Pick<Checklist, 'title'>) {
     const newChecklist = {
       ...checklist,
       id: this.generateSlug(checklist.title),
+      items: [],
     };
 
     this.checklists$.next([...this.checklists$.value, newChecklist]);

@@ -7,6 +7,7 @@ import { of } from 'rxjs';
 import { ChecklistService } from '../shared/data-access/checklist.service';
 
 import { ChecklistPage } from './checklist.page';
+import { MockChecklistItemListComponent } from './ui/checklist-item-list/checklist-item-list.component.spec';
 
 describe('ChecklistPage', () => {
   let component: ChecklistPage;
@@ -20,7 +21,7 @@ describe('ChecklistPage', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ChecklistPage],
+      declarations: [ChecklistPage, MockChecklistItemListComponent],
       imports: [IonicModule.forRoot()],
       providers: [
         {

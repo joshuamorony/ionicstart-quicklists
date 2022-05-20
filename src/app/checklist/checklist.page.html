@@ -17,7 +17,12 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content> </ion-content>
+<ion-content>
+  <app-checklist-item-list
+    *ngIf="checklist$ | async as checklist"
+    [checklistItems]="checklist.items"
+  ></app-checklist-item-list>
+</ion-content>
 
 <ion-modal
   trigger="open-item-modal-trigger"
