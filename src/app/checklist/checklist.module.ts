@@ -7,14 +7,16 @@ import { IonicModule } from '@ionic/angular';
 import { ChecklistPageRoutingModule } from './checklist-routing.module';
 
 import { ChecklistPage } from './checklist.page';
+import { FormModalComponentModule } from '../shared/ui/form-modal/form-modal.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ChecklistPageRoutingModule
+    ChecklistPageRoutingModule,
+    FormModalComponentModule,
   ],
-  declarations: [ChecklistPage]
+  declarations: [ChecklistPage],
 })
 export class ChecklistPageModule {}

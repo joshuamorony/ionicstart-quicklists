@@ -9,11 +9,13 @@ describe('ChecklistService', () => {
   const testChecklistOne = {
     id: 'abc',
     title: 'abc',
+    items: [],
   };
 
   const testChecklistTwo = {
     id: '123',
     title: '123',
+    items: [],
   };
 
   beforeEach(() => {
@@ -45,7 +47,7 @@ describe('ChecklistService', () => {
   });
 
   describe('add()', () => {
-    const testChecklist = { title: 'Hello there' };
+    const testChecklist = { title: 'Hello there', items: [] };
 
     it('should add to existing checklists and emit on checklists$', () => {
       const observerSpy = subscribeSpyTo(service.getChecklists());

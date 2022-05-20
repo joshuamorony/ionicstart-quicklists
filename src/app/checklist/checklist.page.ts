@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { ChecklistService } from '../shared/data-access/checklist.service';
@@ -16,8 +17,17 @@ export class ChecklistPage {
     )
   );
 
+  checklistItemForm = this.fb.group({
+    title: ['', Validators.required],
+  });
+
   constructor(
     private route: ActivatedRoute,
-    private checklistService: ChecklistService
+    private checklistService: ChecklistService,
+    private fb: FormBuilder
   ) {}
+
+  addChecklistItem(checklistId: string) {
+    this.checklistService.addItem(checklistId, this.checklistItemForm.value);
+  }
 }

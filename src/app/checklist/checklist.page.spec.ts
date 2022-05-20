@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { subscribeSpyTo } from '@hirez_io/observer-spy';
 import { IonicModule } from '@ionic/angular';
@@ -14,6 +15,7 @@ describe('ChecklistPage', () => {
   const testChecklist = {
     id: 'hello',
     title: 'hello',
+    items: [],
   };
 
   beforeEach(waitForAsync(() => {
@@ -35,8 +37,10 @@ describe('ChecklistPage', () => {
           provide: ChecklistService,
           useValue: {
             getChecklistById: jest.fn().mockReturnValue(of(testChecklist)),
+            addItem: jest.fn(),
           },
         },
+        FormBuilder,
       ],
     }).compileComponents();
 
@@ -64,6 +68,30 @@ describe('ChecklistPage', () => {
         testChecklist.id
       );
       expect(observerSpy.getLastValue()).toEqual(testChecklist);
+    });
+  });
+
+  describe('checklistItemForm', () => {
+    it('should require a title field', () => {
+      const titleControl = component.checklistItemForm.get('title');
+
+      titleControl.setValue('');
+
+      expect(titleControl.valid).toBe(false);
+    });
+  });
+
+  describe('addChecklistItem()', () => {
+    it('should call the addItem() method of the ChecklistService with the form data', () => {
+      const checklistService =
+        fixture.debugElement.injector.get(ChecklistService);
+
+      component.addChecklistItem(testChecklist.id);
+
+      expect(checklistService.addItem).toHaveBeenCalledWith(
+        testChecklist.id,
+        component.checklistItemForm.value
+      );
     });
   });
 });

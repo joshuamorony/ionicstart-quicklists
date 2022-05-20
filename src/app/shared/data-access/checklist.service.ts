@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, of } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Checklist } from '../interfaces/checklist';
+import { Checklist, ChecklistItem } from '../interfaces/checklist';
 
 @Injectable({
   providedIn: 'root',
@@ -29,6 +29,8 @@ export class ChecklistService {
 
     this.checklists$.next([...this.checklists$.value, newChecklist]);
   }
+
+  addItem(checklistId: string, checklistItem: ChecklistItem) {}
 
   private generateSlug(title: string) {
     // NOTE: This is a simplistic slug generator and will not handle things like special characters.

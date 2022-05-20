@@ -1,8 +1,10 @@
-import { getChecklistItems } from './home';
+import { getChecklistItems, navigateToHomePage } from './home';
 import { createChecklist, getSaveButton, getTitleField } from './shared';
 
 export const navigateToChecklistPage = (forChecklistTitle?: string) => {
   const testTitle = forChecklistTitle ?? 'preflight';
+
+  navigateToHomePage();
   createChecklist(testTitle);
   getChecklistItems().first().click();
 };
