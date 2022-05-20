@@ -22,4 +22,4 @@ export const getAddChecklistItemButton = () =>
   cy.get('[data-test="add-checklist-item-button"]');
 
 export const getItemsForChecklist = () =>
-  cy.get('[data-test="item-for-checklist"]');
+  cy.get('[data-test="checklist-list-item"]');
