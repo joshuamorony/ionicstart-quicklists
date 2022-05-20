@@ -7,7 +7,10 @@
       {{ checklist.title }}
     </ion-title>
     <ion-buttons slot="end">
-      <ion-button data-test="add-checklist-item-button" id="open-modal-trigger">
+      <ion-button
+        data-test="add-checklist-item-button"
+        id="open-item-modal-trigger"
+      >
         <ion-icon name="add" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -16,7 +19,10 @@
 
 <ion-content> </ion-content>
 
-<ion-modal trigger="open-modal-trigger" *ngIf="checklist$ | async as checklist">
+<ion-modal
+  trigger="open-item-modal-trigger"
+  *ngIf="checklist$ | async as checklist"
+>
   <ng-template>
     <app-form-modal
       title="Add Item"

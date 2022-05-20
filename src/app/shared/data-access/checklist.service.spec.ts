@@ -86,4 +86,27 @@ describe('ChecklistService', () => {
       ).toEqual(1);
     });
   });
+
+  describe('addItem()', () => {
+    const testChecklist = { title: 'abc', items: [] };
+    const testItem = {
+      title: 'hello',
+    };
+
+    beforeEach(() => {
+      service.add(testChecklist);
+    });
+
+    it('should add item to checklist and re-emit all checklists on checklists$', () => {
+      const observerSpy = subscribeSpyTo(service.getChecklists());
+
+      service.addItem(testChecklist.title, testItem);
+
+      expect(
+        observerSpy
+          .getLastValue()
+          .find((checklist) => checklist.title === testChecklist.title).items[0]
+      ).toEqual(testItem);
+    });
+  });
 });
