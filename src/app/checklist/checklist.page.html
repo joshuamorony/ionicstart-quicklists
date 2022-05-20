@@ -16,8 +16,12 @@
 
 <ion-content> </ion-content>
 
-<ion-modal trigger="open-modal-trigger">
+<ion-modal trigger="open-modal-trigger" *ngIf="checklist$ | async as checklist">
   <ng-template>
-    <app-form-modal title="Add Item"></app-form-modal>
+    <app-form-modal
+      title="Add Item"
+      [formGroup]="checklistItemForm"
+      (save)="addChecklistItem(checklist.id)"
+    ></app-form-modal>
   </ng-template>
 </ion-modal>
