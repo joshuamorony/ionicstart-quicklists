@@ -1,19 +1,12 @@
 import {
+  createChecklist,
   getAddChecklistButton,
   getCancelButton,
   getChecklistDetailTitle,
   getChecklistItems,
   getFormModal,
-  getSaveButton,
-  getTitleField,
   navigateToHomePage,
 } from '../support/utils';
-
-const createChecklist = (title: string) => {
-  getAddChecklistButton().click();
-  getTitleField().type(title, { delay: 0 });
-  getSaveButton().click();
-};
 
 describe('Home', () => {
   beforeEach(() => {
