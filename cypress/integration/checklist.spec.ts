@@ -20,8 +20,8 @@ describe('Checklist page', () => {
   it('should be able to toggle item completion state', () => {
     createChecklistItem(testTitle);
     getCheckboxForItem().click();
-    getCheckboxForItem().should('have.attr', 'checked', true);
+    getCheckboxForItem().should('have.attr', 'aria-checked', 'true');
     getCheckboxForItem().click();
-    getCheckboxForItem().should('have.attr', 'checked', false);
+    getCheckboxForItem().should('have.attr', 'aria-checked', 'false');
   });
 });
