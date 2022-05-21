@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { subscribeSpyTo } from '@hirez_io/observer-spy';
 import { IonicModule } from '@ionic/angular';
 import { ChecklistItem } from 'src/app/shared/interfaces/checklist-item';
 
@@ -17,6 +18,7 @@ export class MockChecklistItemListComponent {
 describe('ChecklistItemListComponent', () => {
   let component: ChecklistItemListComponent;
   let fixture: ComponentFixture<ChecklistItemListComponent>;
+  const testData = [{}, {}, {}] as any;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
@@ -29,7 +31,10 @@ describe('ChecklistItemListComponent', () => {
       .compileComponents();
 
     fixture = TestBed.createComponent(ChecklistItemListComponent);
+
     component = fixture.componentInstance;
+    component.checklistItems = testData;
+
     fixture.detectChanges();
   }));
 
@@ -39,16 +44,33 @@ describe('ChecklistItemListComponent', () => {
 
   describe('@Input() checklist', () => {
     it('should render a list item for each element', () => {
-      const testData = [{}, {}, {}] as any;
-      component.checklistItems = testData;
-
-      fixture.detectChanges();
-
       const listItems = fixture.debugElement.queryAll(
         By.css('[data-test="checklist-list-item"]')
       );
 
       expect(listItems.length).toEqual(testData.length);
+    });
+  });
+
+  describe('@Output toggle', () => {
+    it('should emit id for checklist item when it is clicked', () => {
+      const testItem = {
+        id: '1',
+        title: 'hello',
+      };
+
+      component.checklistItems = [testItem];
+
+      fixture.detectChanges();
+
+      const observerSpy = subscribeSpyTo(component.toggle);
+
+      const checkbox = fixture.debugElement.query(
+        By.css('[data-test="checklist-list-item"]')
+      );
+      checkbox.nativeElement.click();
+
+      expect(observerSpy.getLastValue()).toEqual(testData.id);
     });
   });
 });

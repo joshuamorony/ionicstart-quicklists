@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+} from '@angular/core';
 import { ChecklistItem } from 'src/app/shared/interfaces/checklist-item';
 
 @Component({
@@ -9,4 +15,5 @@ import { ChecklistItem } from 'src/app/shared/interfaces/checklist-item';
 })
 export class ChecklistItemListComponent {
   @Input() checklistItems: ChecklistItem[];
+  @Output() toggle = new EventEmitter<string>();
 }
