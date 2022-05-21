@@ -1,5 +1,11 @@
 <ion-header>
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button
+        data-test="checklist-back-button"
+        defaultHref="/"
+      ></ion-back-button>
+    </ion-buttons>
     <ion-title data-test="checklist-detail-title" *ngIf="vm$ | async as vm">
       {{ vm.checklist.title }}
     </ion-title>

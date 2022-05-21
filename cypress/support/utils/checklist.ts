@@ -15,6 +15,9 @@ export const createChecklistItem = (title: string) => {
   getSaveButton().click();
 };
 
+export const getChecklistBackButton = () =>
+  cy.get('[data-test="checklist-back-button"]');
+
 export const getChecklistDetailTitle = () =>
   cy.get('[data-test="checklist-detail-title"]');
 
