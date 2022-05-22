@@ -9,13 +9,11 @@ describe('ChecklistService', () => {
   const testChecklistOne = {
     id: 'abc',
     title: 'abc',
-    items: [],
   };
 
   const testChecklistTwo = {
     id: '123',
     title: '123',
-    items: [],
   };
 
   beforeEach(() => {
@@ -47,7 +45,7 @@ describe('ChecklistService', () => {
   });
 
   describe('add()', () => {
-    const testChecklist = { title: 'Hello there', items: [] };
+    const testChecklist = { title: 'Hello there' };
 
     it('should add to existing checklists and emit on checklists$', () => {
       const observerSpy = subscribeSpyTo(service.getChecklists());
@@ -84,29 +82,6 @@ describe('ChecklistService', () => {
           .getLastValue()
           .filter((checklist) => checklist.id === 'hello-there').length
       ).toEqual(1);
-    });
-  });
-
-  describe('addItem()', () => {
-    const testChecklist = { title: 'abc', items: [] };
-    const testItem = {
-      title: 'hello',
-    };
-
-    beforeEach(() => {
-      service.add(testChecklist);
-    });
-
-    it('should add item to checklist and re-emit all checklists on checklists$', () => {
-      const observerSpy = subscribeSpyTo(service.getChecklists());
-
-      service.addItem(testChecklist.title, testItem);
-
-      expect(
-        observerSpy
-          .getLastValue()
-          .find((checklist) => checklist.title === testChecklist.title).items[0]
-      ).toEqual(testItem);
     });
   });
 });

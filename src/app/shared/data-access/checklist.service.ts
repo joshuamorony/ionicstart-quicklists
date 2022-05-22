@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, of } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Checklist, ChecklistItem } from '../interfaces/checklist';
+import { Checklist } from '../interfaces/checklist';
 
 @Injectable({
   providedIn: 'root',
@@ -25,21 +25,9 @@ export class ChecklistService {
     const newChecklist = {
       ...checklist,
       id: this.generateSlug(checklist.title),
-      items: [],
     };
 
     this.checklists$.next([...this.checklists$.value, newChecklist]);
-  }
-
-  addItem(checklistId: string, checklistItem: ChecklistItem) {
-    const checklistsWithItemAddedToChecklist = this.checklists$.value.map(
-      (checklist) =>
-        checklist.id === checklistId
-          ? { ...checklist, items: [...checklist.items, checklistItem] }
-          : checklist
-    );
-
-    this.checklists$.next(checklistsWithItemAddedToChecklist);
   }
 
   private generateSlug(title: string) {

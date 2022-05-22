@@ -7,6 +7,7 @@ import { of } from 'rxjs';
 import { ChecklistService } from '../shared/data-access/checklist.service';
 
 import { ChecklistPage } from './checklist.page';
+import { ChecklistItemService } from './data-access/checklist-item.service';
 import { MockChecklistItemListComponent } from './ui/checklist-item-list/checklist-item-list.component.spec';
 
 describe('ChecklistPage', () => {
@@ -16,8 +17,15 @@ describe('ChecklistPage', () => {
   const testChecklist = {
     id: 'hello',
     title: 'hello',
-    items: [],
   };
+
+  const testItems = [
+    {
+      id: '1',
+      checklistId: testChecklist.id,
+      title: 'there',
+    },
+  ];
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
@@ -38,7 +46,13 @@ describe('ChecklistPage', () => {
           provide: ChecklistService,
           useValue: {
             getChecklistById: jest.fn().mockReturnValue(of(testChecklist)),
-            addItem: jest.fn(),
+          },
+        },
+        {
+          provide: ChecklistItemService,
+          useValue: {
+            add: jest.fn(),
+            getItemsByChecklistId: jest.fn().mockReturnValue(of(testItems)),
           },
         },
         FormBuilder,
@@ -54,21 +68,36 @@ describe('ChecklistPage', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('checklist$', () => {
-    it('should be the stream returned from getChecklistById for the id passed in through the route', () => {
+  describe('vm$', () => {
+    it('should combine the stream returned from getChecklistById for the id passed in through the route along with its items', () => {
       const checklistService =
         fixture.debugElement.injector.get(ChecklistService);
+
+      const checklistItemService =
+        fixture.debugElement.injector.get(ChecklistItemService);
 
       jest
         .spyOn(checklistService, 'getChecklistById')
         .mockReturnValue(of(testChecklist));
 
-      const observerSpy = subscribeSpyTo(component.checklist$);
+      jest
+        .spyOn(checklistItemService, 'getItemsByChecklistId')
+        .mockReturnValue(of(testItems));
 
-      expect(checklistService.getChecklistById).toHaveBeenLastCalledWith(
+      const observerSpy = subscribeSpyTo(component.vm$);
+
+      expect(checklistService.getChecklistById).toHaveBeenCalledWith(
         testChecklist.id
       );
-      expect(observerSpy.getLastValue()).toEqual(testChecklist);
+
+      expect(checklistItemService.getItemsByChecklistId).toHaveBeenCalledWith(
+        testChecklist.id
+      );
+
+      expect(observerSpy.getLastValue()).toEqual({
+        checklist: testChecklist,
+        items: testItems,
+      });
     });
   });
 
@@ -83,15 +112,15 @@ describe('ChecklistPage', () => {
   });
 
   describe('addChecklistItem()', () => {
-    it('should call the addItem() method of the ChecklistService with the form data', () => {
-      const checklistService =
-        fixture.debugElement.injector.get(ChecklistService);
+    it('should call the add() method of the ChecklistService with the form data', () => {
+      const checklistItemService =
+        fixture.debugElement.injector.get(ChecklistItemService);
 
       component.addChecklistItem(testChecklist.id);
 
-      expect(checklistService.addItem).toHaveBeenCalledWith(
-        testChecklist.id,
-        component.checklistItemForm.value
+      expect(checklistItemService.add).toHaveBeenCalledWith(
+        component.checklistItemForm.value,
+        testChecklist.id
       );
     });
   });

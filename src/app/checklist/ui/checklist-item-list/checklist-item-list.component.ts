@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { ChecklistItem } from 'src/app/shared/interfaces/checklist';
+import { ChecklistItem } from 'src/app/shared/interfaces/checklist-item';
 
 @Component({
   selector: 'app-checklist-item-list',

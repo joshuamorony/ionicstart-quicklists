@@ -1,10 +1,7 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title
-      data-test="checklist-detail-title"
-      *ngIf="checklist$ | async as checklist"
-    >
-      {{ checklist.title }}
+    <ion-title data-test="checklist-detail-title" *ngIf="vm$ | async as vm">
+      {{ vm.checklist.title }}
     </ion-title>
     <ion-buttons slot="end">
       <ion-button
@@ -19,20 +16,17 @@
 
 <ion-content>
   <app-checklist-item-list
-    *ngIf="checklist$ | async as checklist"
-    [checklistItems]="checklist.items"
+    *ngIf="vm$ | async as vm"
+    [checklistItems]="vm.items"
   ></app-checklist-item-list>
 </ion-content>
 
-<ion-modal
-  trigger="open-item-modal-trigger"
-  *ngIf="checklist$ | async as checklist"
->
+<ion-modal trigger="open-item-modal-trigger" *ngIf="vm$ | async as vm">
   <ng-template>
     <app-form-modal
       title="Add Item"
       [formGroup]="checklistItemForm"
-      (save)="addChecklistItem(checklist.id)"
+      (save)="addChecklistItem(vm.checklist.id)"
     ></app-form-modal>
   </ng-template>
 </ion-modal>
