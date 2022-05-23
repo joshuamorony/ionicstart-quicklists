@@ -32,4 +32,11 @@ describe('Home', () => {
     getChecklistItems().first().click();
     getChecklistDetailTitle().should('contain.text', testTitle);
   });
+
+  it('should remember data after reloading', () => {
+    const testTitle = 'preflight';
+    createChecklist(testTitle);
+    cy.reload();
+    getChecklistItems().should('contain.text', testTitle);
+  });
 });
