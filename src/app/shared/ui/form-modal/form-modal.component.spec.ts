@@ -152,4 +152,14 @@ describe('FormModalComponent', () => {
       expect(observerSpy.getValuesLength()).toEqual(1);
     });
   });
+
+  describe('dismiss()', () => {
+    it('should reset form values', () => {
+      jest.spyOn(component.formGroup, 'reset');
+
+      component.dismiss();
+
+      expect(component.formGroup.reset).toHaveBeenCalled();
+    });
+  });
 });

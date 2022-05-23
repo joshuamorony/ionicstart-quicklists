@@ -28,6 +28,7 @@ export class FormModalComponent {
   }
 
   dismiss() {
+    this.formGroup.reset();
     this.modalCtrl.dismiss();
   }
 }
