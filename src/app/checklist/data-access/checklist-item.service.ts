@@ -12,6 +12,11 @@ export class ChecklistItemService {
 
   constructor(private storageService: StorageService) {}
 
+  async load() {
+    const checklistItems = await this.storageService.loadChecklistItems();
+    this.checklistItems$.next(checklistItems);
+  }
+
   getItemsByChecklistId(checklistId: string) {
     return this.checklistItems$.pipe(
       map((items) => items.filter((item) => item.checklistId === checklistId)),
