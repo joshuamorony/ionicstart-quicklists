@@ -11,6 +11,13 @@
     </ion-title>
     <ion-buttons slot="end">
       <ion-button
+        data-test="reset-items"
+        *ngIf="vm$ | async as vm"
+        (click)="resetChecklistItems(vm.checklist.id)"
+      >
+        <ion-icon name="refresh" slot="icon-only"></ion-icon>
+      </ion-button>
+      <ion-button
         data-test="add-checklist-item-button"
         id="open-item-modal-trigger"
       >

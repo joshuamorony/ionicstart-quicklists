@@ -42,15 +42,12 @@ describe('Checklist page', () => {
   it('should be able to reset all items to unchecked state', () => {
     createChecklistItem(testTitle);
 
-    const firstItem = getItemsForChecklist().first();
-    const secondItem = getItemsForChecklist().last();
-
-    firstItem.click();
-    secondItem.click();
+    getItemsForChecklist().first().click();
+    getItemsForChecklist().last().click();
 
     getResetButton().click();
 
-    firstItem.should('not.have.class', 'checkbox-checked');
-    secondItem.should('not.have.class', 'checkbox-checked');
+    getCheckboxForItem().first().should('not.have.class', 'checkbox-checked');
+    getCheckboxForItem().last().should('not.have.class', 'checkbox-checked');
   });
 });

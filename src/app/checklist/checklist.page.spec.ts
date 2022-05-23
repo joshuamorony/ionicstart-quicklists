@@ -56,6 +56,7 @@ describe('ChecklistPage', () => {
           useValue: {
             add: jest.fn(),
             toggle: jest.fn(),
+            reset: jest.fn(),
             getItemsByChecklistId: jest.fn().mockReturnValue(of(testItems)),
           },
         },
@@ -138,6 +139,17 @@ describe('ChecklistPage', () => {
         component.checklistItemForm.value,
         testChecklist.id
       );
+    });
+  });
+
+  describe('resetChecklistItems()', () => {
+    it('should call the reset() method of the ChecklistItem service for the selected checklist', () => {
+      const checklistItemService =
+        fixture.debugElement.injector.get(ChecklistItemService);
+
+      component.resetChecklistItems(testChecklist.id);
+
+      expect(checklistItemService.reset).toHaveBeenCalledWith(testChecklist.id);
     });
   });
 });
