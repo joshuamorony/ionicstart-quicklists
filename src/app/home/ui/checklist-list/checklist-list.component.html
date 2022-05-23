@@ -1,7 +1,7 @@
 <ion-list>
   <ion-item
     data-test="checklist-item"
-    *ngFor="let checklist of checklists"
+    *ngFor="let checklist of checklists; trackBy: trackByFn"
     button
     routerLink="/checklist/{{ checklist.id }}"
     routerDirection="forward"

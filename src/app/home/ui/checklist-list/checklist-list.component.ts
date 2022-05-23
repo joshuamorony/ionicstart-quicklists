@@ -11,4 +11,8 @@ export class ChecklistListComponent {
   @Input() checklists: Checklist[];
 
   constructor() {}
+
+  trackByFn(index: number, checklist: Checklist) {
+    return checklist.id;
+  }
 }

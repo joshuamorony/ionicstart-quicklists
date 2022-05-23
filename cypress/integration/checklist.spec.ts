@@ -24,18 +24,17 @@ describe('Checklist page', () => {
     const checkbox = getCheckboxForItem();
 
     item.click();
-    checkbox.should('have.attr', 'aria-checked', 'true');
+    checkbox.should('have.class', 'checkbox-checked');
     item.click();
-    checkbox.should('have.attr', 'aria-checked', 'false');
+    checkbox.should('not.have.class', 'aria-checked', 'false');
   });
 
   it('should remember item completion state', () => {
     const item = getItemsForChecklist().first();
-    const checkbox = getCheckboxForItem();
 
     item.click();
     getChecklistBackButton().click();
     getChecklistItems().first().click();
-    checkbox.should('have.attr', 'aria-checked', 'true');
+    getCheckboxForItem().should('have.class', 'checkbox-checked');
   });
 });

@@ -20,4 +20,8 @@ export class ChecklistItemListComponent {
   toggleItem(itemId: string) {
     this.toggle.emit(itemId);
   }
+
+  trackByFn(index: number, item: ChecklistItem) {
+    return item.id;
+  }
 }
