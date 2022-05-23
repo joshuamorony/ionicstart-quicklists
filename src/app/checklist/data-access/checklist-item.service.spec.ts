@@ -6,9 +6,22 @@ import { ChecklistItemService } from './checklist-item.service';
 describe('ChecklistItemService', () => {
   let service: ChecklistItemService;
 
+  const testChecklistId = '1';
+  const testItem = {
+    title: 'hello',
+  };
+
+  const testChecklistIdTwo = '2';
+  const testItemTwo = {
+    title: 'goodbye',
+  };
+
   beforeEach(() => {
     TestBed.configureTestingModule({});
     service = TestBed.inject(ChecklistItemService);
+
+    service.add(testItem, testChecklistId);
+    service.add(testItemTwo, testChecklistIdTwo);
   });
 
   it('should be created', () => {
@@ -16,21 +29,6 @@ describe('ChecklistItemService', () => {
   });
 
   describe('getItemsByChecklistId()', () => {
-    const testChecklistIdOne = '1';
-    const testItemOne = {
-      title: 'hello',
-    };
-
-    const testChecklistIdTwo = '2';
-    const testItemTwo = {
-      title: 'goodbye',
-    };
-
-    beforeEach(() => {
-      service.add(testItemOne, testChecklistIdOne);
-      service.add(testItemTwo, testChecklistIdTwo);
-    });
-
     it('should emit items for specific checklist', () => {
       const observerSpy = subscribeSpyTo(
         service.getItemsByChecklistId(testChecklistIdTwo)
@@ -48,17 +46,9 @@ describe('ChecklistItemService', () => {
 
   describe('add()', () => {
     it('should create item and emit for that checklist id', () => {
-      const testChecklistId = '1';
-
-      const testItem = {
-        title: 'hello',
-      };
-
       const observerSpy = subscribeSpyTo(
         service.getItemsByChecklistId(testChecklistId)
       );
-
-      service.add(testItem, testChecklistId);
 
       expect(
         observerSpy
@@ -70,16 +60,9 @@ describe('ChecklistItemService', () => {
 
   describe('toggle()', () => {
     it('should toggle the checked state for the item id', () => {
-      const testChecklistId = '1';
-      const testItem = {
-        title: 'hello',
-      };
-
       const observerSpy = subscribeSpyTo(
         service.getItemsByChecklistId(testChecklistId)
       );
-
-      service.add(testItem, testChecklistId);
 
       const item = observerSpy.getLastValue()[0];
       const checkedStateBefore = item.checked;
@@ -89,6 +72,28 @@ describe('ChecklistItemService', () => {
       const checkedStateAfter = observerSpy.getLastValue()[0].checked;
 
       expect(checkedStateBefore).toEqual(!checkedStateAfter);
+    });
+  });
+
+  describe('reset()', () => {
+    it('should reset the checked state for all items', () => {
+      const observerSpy = subscribeSpyTo(
+        service.getItemsByChecklistId(testChecklistId)
+      );
+
+      const itemsBefore = observerSpy.getLastValue();
+
+      itemsBefore.forEach((item) => {
+        service.toggle(item.id);
+      });
+
+      service.reset(testChecklistId);
+
+      const itemsAfter = observerSpy.getLastValue();
+
+      itemsAfter.forEach((item) => {
+        expect(item.checked).toBe(false);
+      });
     });
   });
 });

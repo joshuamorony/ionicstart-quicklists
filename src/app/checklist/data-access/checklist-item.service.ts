@@ -17,7 +17,13 @@ export class ChecklistItemService {
     );
   }
 
-  reset(checklistId: string) {}
+  reset(checklistId: string) {
+    const newItems = this.checklistItems$.value.map((item) =>
+      item.checklistId === checklistId ? { ...item, checked: false } : item
+    );
+
+    this.checklistItems$.next(newItems);
+  }
 
   toggle(itemId: string) {
     const newItems = this.checklistItems$.value.map((item) =>
