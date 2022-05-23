@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { ChecklistItem } from 'src/app/shared/interfaces/checklist-item';
+import { map, tap } from 'rxjs/operators';
+import { StorageService } from '../../shared/data-access/storage.service';
+import { ChecklistItem } from '../../shared/interfaces/checklist-item';
 
 @Injectable({
   providedIn: 'root',
@@ -9,11 +10,12 @@ import { ChecklistItem } from 'src/app/shared/interfaces/checklist-item';
 export class ChecklistItemService {
   private checklistItems$ = new BehaviorSubject<ChecklistItem[]>([]);
 
-  constructor() {}
+  constructor(private storageService: StorageService) {}
 
   getItemsByChecklistId(checklistId: string) {
     return this.checklistItems$.pipe(
-      map((items) => items.filter((item) => item.checklistId === checklistId))
+      map((items) => items.filter((item) => item.checklistId === checklistId)),
+      tap((items) => this.storageService.saveChecklistItems(items))
     );
   }
 

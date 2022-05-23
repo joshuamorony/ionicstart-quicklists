@@ -1,10 +1,14 @@
 import { TestBed } from '@angular/core/testing';
 import { subscribeSpyTo } from '@hirez_io/observer-spy';
+import { StorageService } from '../../shared/data-access/storage.service';
 
 import { ChecklistItemService } from './checklist-item.service';
 
+jest.mock('../../shared/data-access/storage.service');
+
 describe('ChecklistItemService', () => {
   let service: ChecklistItemService;
+  let storageService: StorageService;
 
   const testChecklistId = '1';
   const testItem = {
@@ -17,8 +21,11 @@ describe('ChecklistItemService', () => {
   };
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [StorageService],
+    });
     service = TestBed.inject(ChecklistItemService);
+    storageService = TestBed.inject(StorageService);
 
     service.add(testItem, testChecklistId);
     service.add(testItemTwo, testChecklistIdTwo);
@@ -41,6 +48,19 @@ describe('ChecklistItemService', () => {
         service.getItemsByChecklistId('noitems')
       );
       expect(observerSpy.getLastValue()).toEqual([]);
+    });
+
+    it('should pass checklist item data to saveChecklistItems method of storage service when it emits', () => {
+      const observerSpy = subscribeSpyTo(
+        service.getItemsByChecklistId(testChecklistId)
+      );
+      service.add(testItem, testChecklistId);
+
+      const checklistItems = observerSpy.getLastValue();
+
+      expect(storageService.saveChecklistItems).toHaveBeenCalledWith(
+        checklistItems
+      );
     });
   });
 
