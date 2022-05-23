@@ -20,16 +20,22 @@ describe('Checklist page', () => {
   });
 
   it('should be able to toggle item completion state', () => {
-    getCheckboxForItem().click();
-    getCheckboxForItem().should('have.attr', 'aria-checked', 'true');
-    getCheckboxForItem().click();
-    getCheckboxForItem().should('have.attr', 'aria-checked', 'false');
+    const item = getChecklistItems().first();
+    const checkbox = getCheckboxForItem();
+
+    item.click();
+    checkbox.should('have.attr', 'aria-checked', 'true');
+    item.click();
+    checkbox.should('have.attr', 'aria-checked', 'false');
   });
 
   it('should remember item completion state', () => {
-    getCheckboxForItem().click();
+    const item = getChecklistItems().first();
+    const checkbox = getCheckboxForItem();
+
+    item.click();
     getChecklistBackButton().click();
-    getChecklistItems().first().click();
-    getCheckboxForItem().should('have.attr', 'aria-checked', 'true');
+    item.click();
+    checkbox.should('have.attr', 'aria-checked', 'true');
   });
 });

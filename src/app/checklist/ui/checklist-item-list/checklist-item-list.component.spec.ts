@@ -56,6 +56,7 @@ describe('ChecklistItemListComponent', () => {
     it('should emit id for checklist item when it is clicked', () => {
       const testItem = {
         id: '1',
+        checklistId: '1',
         title: 'hello',
       };
 
@@ -65,12 +66,13 @@ describe('ChecklistItemListComponent', () => {
 
       const observerSpy = subscribeSpyTo(component.toggle);
 
-      const checkbox = fixture.debugElement.query(
+      const item = fixture.debugElement.query(
         By.css('[data-test="checklist-list-item"]')
       );
-      checkbox.nativeElement.click();
 
-      expect(observerSpy.getLastValue()).toEqual(testData.id);
+      item.nativeElement.click();
+
+      expect(observerSpy.getLastValue()).toEqual(testItem.id);
     });
   });
 });
