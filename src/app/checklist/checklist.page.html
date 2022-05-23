@@ -24,6 +24,7 @@
   <app-checklist-item-list
     *ngIf="vm$ | async as vm"
     [checklistItems]="vm.items"
+    (toggle)="toggleChecklistItem($event)"
   ></app-checklist-item-list>
 </ion-content>
 

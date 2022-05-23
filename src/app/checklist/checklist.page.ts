@@ -37,4 +37,8 @@ export class ChecklistPage {
   addChecklistItem(checklistId: string) {
     this.checklistItemService.add(this.checklistItemForm.value, checklistId);
   }
+
+  toggleChecklistItem(itemId: string) {
+    this.checklistItemService.toggle(itemId);
+  }
 }

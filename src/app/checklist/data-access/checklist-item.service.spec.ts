@@ -67,4 +67,28 @@ describe('ChecklistItemService', () => {
       ).toBeTruthy();
     });
   });
+
+  describe('toggle()', () => {
+    it('should toggle the checked state for the item id', () => {
+      const testChecklistId = '1';
+      const testItem = {
+        title: 'hello',
+      };
+
+      const observerSpy = subscribeSpyTo(
+        service.getItemsByChecklistId(testChecklistId)
+      );
+
+      service.add(testItem, testChecklistId);
+
+      const item = observerSpy.getLastValue()[0];
+      const checkedStateBefore = item.checked;
+
+      service.toggle(item.id);
+
+      const checkedStateAfter = observerSpy.getLastValue()[0].checked;
+
+      expect(checkedStateBefore).toEqual(!checkedStateAfter);
+    });
+  });
 });

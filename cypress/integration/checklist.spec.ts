@@ -30,12 +30,12 @@ describe('Checklist page', () => {
   });
 
   it('should remember item completion state', () => {
-    const item = getChecklistItems().first();
+    const item = getItemsForChecklist().first();
     const checkbox = getCheckboxForItem();
 
     item.click();
     getChecklistBackButton().click();
-    item.click();
+    getChecklistItems().first().click();
     checkbox.should('have.attr', 'aria-checked', 'true');
   });
 });

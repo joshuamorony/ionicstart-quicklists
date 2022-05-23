@@ -17,10 +17,19 @@ export class ChecklistItemService {
     );
   }
 
-  add(item: Omit<ChecklistItem, 'id' | 'checklistId'>, checklistId: string) {
+  toggle(itemId: string) {
+    const newItems = this.checklistItems$.value.map((item) =>
+      item.id === itemId ? { ...item, checked: !item.checked } : item
+    );
+
+    this.checklistItems$.next(newItems);
+  }
+
+  add(item: Pick<ChecklistItem, 'title'>, checklistId: string) {
     const newItem = {
       id: Date.now().toString(),
       checklistId,
+      checked: false,
       ...item,
     };
 

@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+} from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { subscribeSpyTo } from '@hirez_io/observer-spy';
@@ -13,6 +19,7 @@ import { ChecklistItemListComponent } from './checklist-item-list.component';
 })
 export class MockChecklistItemListComponent {
   @Input() checklistItems: ChecklistItem[];
+  @Output() toggle = new EventEmitter<string>();
 }
 
 describe('ChecklistItemListComponent', () => {
@@ -57,6 +64,7 @@ describe('ChecklistItemListComponent', () => {
       const testItem = {
         id: '1',
         checklistId: '1',
+        checked: false,
         title: 'hello',
       };
 
