@@ -4,6 +4,7 @@ import {
   getChecklistBackButton,
   getChecklistItems,
   getItemsForChecklist,
+  getResetButton,
   navigateToChecklistPage,
 } from '../support/utils';
 
@@ -20,13 +21,13 @@ describe('Checklist page', () => {
   });
 
   it('should be able to toggle item completion state', () => {
-    const item = getChecklistItems().first();
+    const item = getItemsForChecklist().first();
     const checkbox = getCheckboxForItem();
 
     item.click();
     checkbox.should('have.class', 'checkbox-checked');
     item.click();
-    checkbox.should('not.have.class', 'aria-checked', 'false');
+    checkbox.should('not.have.class', 'checkbox-checked');
   });
 
   it('should remember item completion state', () => {
@@ -36,5 +37,20 @@ describe('Checklist page', () => {
     getChecklistBackButton().click();
     getChecklistItems().first().click();
     getCheckboxForItem().should('have.class', 'checkbox-checked');
+  });
+
+  it('should be able to reset all items to unchecked state', () => {
+    createChecklistItem(testTitle);
+
+    const firstItem = getItemsForChecklist().first();
+    const secondItem = getItemsForChecklist().last();
+
+    firstItem.click();
+    secondItem.click();
+
+    getResetButton().click();
+
+    firstItem.should('not.have.class', 'checkbox-checked');
+    secondItem.should('not.have.class', 'checkbox-checked');
   });
 });
