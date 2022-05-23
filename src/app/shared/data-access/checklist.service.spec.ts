@@ -32,6 +32,21 @@ describe('ChecklistService', () => {
     expect(service).toBeTruthy();
   });
 
+  describe('load()', () => {
+    it('should trigger result from loadChecklists from storage service to emit on getChecklists()', async () => {
+      const testLoadData = [{ id: 'xyz', title: 'abc' }];
+
+      jest
+        .spyOn(storageService, 'loadChecklists')
+        .mockResolvedValue(testLoadData);
+
+      const observerSpy = subscribeSpyTo(service.getChecklists());
+      await service.load();
+
+      expect(observerSpy.getLastValue()).toEqual(testLoadData);
+    });
+  });
+
   describe('getChecklists()', () => {
     it('should emit an empty array initially', () => {
       const observerSpy = subscribeSpyTo(service.getChecklists());

@@ -12,6 +12,11 @@ export class ChecklistService {
 
   constructor(private storageService: StorageService) {}
 
+  async load() {
+    const checklists = await this.storageService.loadChecklists();
+    this.checklists$.next(checklists);
+  }
+
   getChecklists() {
     return this.checklists$.pipe(
       tap((checklists) => this.storageService.saveChecklists(checklists))
