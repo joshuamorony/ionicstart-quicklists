@@ -2,9 +2,13 @@ import { TestBed } from '@angular/core/testing';
 import { subscribeSpyTo } from '@hirez_io/observer-spy';
 
 import { ChecklistService } from './checklist.service';
+import { StorageService } from './storage.service';
+
+jest.mock('./storage.service');
 
 describe('ChecklistService', () => {
   let service: ChecklistService;
+  let storageService: StorageService;
 
   const testChecklistOne = {
     id: 'abc',
@@ -17,8 +21,11 @@ describe('ChecklistService', () => {
   };
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [StorageService],
+    });
     service = TestBed.inject(ChecklistService);
+    storageService = TestBed.inject(StorageService);
   });
 
   it('should be created', () => {
@@ -29,6 +36,15 @@ describe('ChecklistService', () => {
     it('should emit an empty array initially', () => {
       const observerSpy = subscribeSpyTo(service.getChecklists());
       expect(observerSpy.getLastValue()).toEqual([]);
+    });
+
+    it('should pass checklist data to saveChecklists method of storage service when it emits', () => {
+      const observerSpy = subscribeSpyTo(service.getChecklists());
+      service.add(testChecklistOne);
+
+      const checklists = observerSpy.getLastValue();
+
+      expect(storageService.saveChecklists).toHaveBeenCalledWith(checklists);
     });
   });
 
