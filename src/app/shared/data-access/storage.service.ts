@@ -17,8 +17,16 @@ export class StorageService {
     this.storage = await this.ionicStorage.create();
   }
 
+  async loadChecklists() {
+    return await this.storage?.get('checklists');
+  }
+
   async saveChecklists(checklists: Checklist[]) {
     this.storage?.set('checklists', checklists);
+  }
+
+  async loadChecklistItems() {
+    return await this.storage?.get('checklistItems');
   }
 
   async saveChecklistItems(checklistItems: ChecklistItem[]) {
