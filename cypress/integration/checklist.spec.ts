@@ -21,13 +21,10 @@ describe('Checklist page', () => {
   });
 
   it('should be able to toggle item completion state', () => {
-    const item = getItemsForChecklist().first();
-    const checkbox = getCheckboxForItem();
-
-    item.click();
-    checkbox.should('have.class', 'checkbox-checked');
-    item.click();
-    checkbox.should('not.have.class', 'checkbox-checked');
+    getItemsForChecklist().first().click();
+    getCheckboxForItem().should('have.class', 'checkbox-checked');
+    getItemsForChecklist().first().click();
+    getCheckboxForItem().should('not.have.class', 'checkbox-checked');
   });
 
   it('should remember item completion state', () => {

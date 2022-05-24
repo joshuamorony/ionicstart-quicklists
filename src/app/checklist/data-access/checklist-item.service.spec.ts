@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { subscribeSpyTo } from '@hirez_io/observer-spy';
+import { combineLatest } from 'rxjs';
 import { StorageService } from '../../shared/data-access/storage.service';
 
 import { ChecklistItemService } from './checklist-item.service';
@@ -71,15 +72,18 @@ describe('ChecklistItemService', () => {
 
     it('should pass checklist item data to saveChecklistItems method of storage service when it emits', () => {
       const observerSpy = subscribeSpyTo(
-        service.getItemsByChecklistId(testChecklistId)
+        combineLatest([
+          service.getItemsByChecklistId(testChecklistId),
+          service.getItemsByChecklistId(testChecklistIdTwo),
+        ])
       );
-      service.add(testItem, testChecklistId);
 
-      const checklistItems = observerSpy.getLastValue();
+      const data = [
+        ...observerSpy.getLastValue()[0],
+        ...observerSpy.getLastValue()[1],
+      ];
 
-      expect(storageService.saveChecklistItems).toHaveBeenCalledWith(
-        checklistItems
-      );
+      expect(storageService.saveChecklistItems).toHaveBeenLastCalledWith(data);
     });
   });
 

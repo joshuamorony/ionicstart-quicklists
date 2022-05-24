@@ -28,6 +28,8 @@ describe('StorageService', () => {
     });
     service = TestBed.inject(StorageService);
     storage = TestBed.inject(Storage);
+
+    jest.clearAllMocks();
   });
 
   it('should be created', () => {
@@ -81,18 +83,34 @@ describe('StorageService', () => {
   describe('saveChecklists()', () => {
     it('should pass data to set method of storage api', async () => {
       await service.init();
+      const test = await service.loadChecklists();
       const testData = {};
       await service.saveChecklists(testData as any);
       expect(setMock).toHaveBeenCalledWith('checklists', testData);
+    });
+
+    it('should NOT pass data if checklists have not been loaded yet', async () => {
+      await service.init();
+      const testData = {};
+      await service.saveChecklists(testData as any);
+      expect(setMock).not.toHaveBeenCalled();
     });
   });
 
   describe('saveChecklistsItems()', () => {
     it('should pass data to set method of storage api', async () => {
       await service.init();
+      await service.loadChecklistItems();
       const testData = {};
       await service.saveChecklistItems(testData as any);
       expect(setMock).toHaveBeenCalledWith('checklistItems', testData);
+    });
+
+    it('should NOT pass data if checklistItems have not been loaded yet', async () => {
+      await service.init();
+      const testData = {};
+      await service.saveChecklistItems(testData as any);
+      expect(setMock).not.toHaveBeenCalled();
     });
   });
 });

@@ -20,7 +20,9 @@ export class ChecklistItemService {
   getItemsByChecklistId(checklistId: string) {
     return this.checklistItems$.pipe(
       map((items) => items.filter((item) => item.checklistId === checklistId)),
-      tap((items) => this.storageService.saveChecklistItems(items))
+      tap(() =>
+        this.storageService.saveChecklistItems(this.checklistItems$.value)
+      )
     );
   }
 

@@ -8,6 +8,8 @@ import { ChecklistItem } from '../interfaces/checklist-item';
 })
 export class StorageService {
   private storage: Storage | null = null;
+  private checklistsLoaded = false;
+  private checklistItemsLoaded = false;
 
   constructor(private ionicStorage: Storage) {}
 
@@ -16,18 +18,28 @@ export class StorageService {
   }
 
   async loadChecklists(): Promise<Checklist[]> {
-    return (await this.storage?.get('checklists')) ?? [];
+    const checklists = (await this.storage?.get('checklists')) ?? [];
+    this.checklistsLoaded = true;
+
+    return checklists;
   }
 
   async saveChecklists(checklists: Checklist[]) {
-    this.storage?.set('checklists', checklists);
+    if (this.checklistsLoaded) {
+      this.storage?.set('checklists', checklists);
+    }
   }
 
   async loadChecklistItems(): Promise<ChecklistItem[]> {
-    return (await this.storage?.get('checklistItems')) ?? [];
+    const checklistItems = (await this.storage?.get('checklistItems')) ?? [];
+    this.checklistItemsLoaded = true;
+
+    return checklistItems;
   }
 
   async saveChecklistItems(checklistItems: ChecklistItem[]) {
-    this.storage?.set('checklistItems', checklistItems);
+    if (this.checklistItemsLoaded) {
+      this.storage?.set('checklistItems', checklistItems);
+    }
   }
 }
