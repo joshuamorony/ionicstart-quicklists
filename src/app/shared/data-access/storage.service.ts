@@ -9,9 +9,7 @@ import { ChecklistItem } from '../interfaces/checklist-item';
 export class StorageService {
   private storage: Storage | null = null;
 
-  constructor(private ionicStorage: Storage) {
-    this.init();
-  }
+  constructor(private ionicStorage: Storage) {}
 
   async init() {
     this.storage = await this.ionicStorage.create();

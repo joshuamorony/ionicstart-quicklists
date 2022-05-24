@@ -34,8 +34,15 @@ describe('StorageService', () => {
     expect(service).toBeTruthy();
   });
 
+  describe('init()', () => {
+    it('should return a promise', () => {
+      expect(service.init()).toBeInstanceOf(Promise);
+    });
+  });
+
   describe('loadChecklists()', () => {
     it('should return result of get method of storage api', async () => {
+      await service.init();
       const result = await service.loadChecklists();
       expect(getMock).toHaveBeenCalledWith('checklists');
       expect(result).toEqual(testLoadData);
@@ -54,6 +61,7 @@ describe('StorageService', () => {
 
   describe('loadChecklistItems()', () => {
     it('should return result of get method of storage api', async () => {
+      await service.init();
       const result = await service.loadChecklistItems();
       expect(getMock).toHaveBeenCalledWith('checklistItems');
       expect(result).toEqual(testLoadData);
@@ -72,6 +80,7 @@ describe('StorageService', () => {
 
   describe('saveChecklists()', () => {
     it('should pass data to set method of storage api', async () => {
+      await service.init();
       const testData = {};
       await service.saveChecklists(testData as any);
       expect(setMock).toHaveBeenCalledWith('checklists', testData);
@@ -80,6 +89,7 @@ describe('StorageService', () => {
 
   describe('saveChecklistsItems()', () => {
     it('should pass data to set method of storage api', async () => {
+      await service.init();
       const testData = {};
       await service.saveChecklistItems(testData as any);
       expect(setMock).toHaveBeenCalledWith('checklistItems', testData);

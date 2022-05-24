@@ -4,9 +4,11 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { ChecklistItemService } from './checklist/data-access/checklist-item.service';
 import { ChecklistService } from './shared/data-access/checklist.service';
+import { StorageService } from './shared/data-access/storage.service';
 
 jest.mock('./checklist/data-access/checklist-item.service');
 jest.mock('./shared/data-access/checklist.service');
+jest.mock('./shared/data-access/storage.service');
 
 describe('AppComponent', () => {
   let component: AppComponent;
@@ -15,7 +17,7 @@ describe('AppComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [AppComponent],
-      providers: [ChecklistItemService, ChecklistService],
+      providers: [ChecklistItemService, ChecklistService, StorageService],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
 
@@ -28,19 +30,37 @@ describe('AppComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should call load method for checklist service', () => {
+  it('should call storage init', () => {
+    const storageService = fixture.debugElement.injector.get(StorageService);
+
+    expect(storageService.init).toHaveBeenCalled();
+  });
+
+  it('should not call load methods before storage init resolves', () => {
     const checklistService =
       fixture.debugElement.injector.get(ChecklistService);
 
-    component.ngOnInit();
-    expect(checklistService.load).toHaveBeenCalled();
-  });
-
-  it('should call load method for checklist item service', () => {
     const checklistItemService =
       fixture.debugElement.injector.get(ChecklistItemService);
 
+    jest.resetAllMocks();
+
     component.ngOnInit();
+    expect(checklistService.load).not.toHaveBeenCalled();
+    expect(checklistItemService.load).not.toHaveBeenCalled();
+  });
+
+  it('should call load method for checklist service', async () => {
+    const checklistService =
+      fixture.debugElement.injector.get(ChecklistService);
+
+    expect(checklistService.load).toHaveBeenCalled();
+  });
+
+  it('should call load method for checklist item service', async () => {
+    const checklistItemService =
+      fixture.debugElement.injector.get(ChecklistItemService);
+
     expect(checklistItemService.load).toHaveBeenCalled();
   });
 });
