@@ -20,9 +20,18 @@ describe('ChecklistService', () => {
     title: '123',
   };
 
+  const testLoadData = [{ id: 'xyz', title: 'abc' }];
+
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [StorageService],
+      providers: [
+        {
+          provide: StorageService,
+          useValue: {
+            loadChecklists: jest.fn().mockResolvedValue(testLoadData),
+          },
+        },
+      ],
     });
     service = TestBed.inject(ChecklistService);
     storageService = TestBed.inject(StorageService);
@@ -34,11 +43,9 @@ describe('ChecklistService', () => {
 
   describe('load()', () => {
     it('should trigger result from loadChecklists from storage service to emit on getChecklists()', async () => {
-      const testLoadData = [{ id: 'xyz', title: 'abc' }];
-
-      jest
-        .spyOn(storageService, 'loadChecklists')
-        .mockResolvedValue(testLoadData);
+      // jest
+      //   .spyOn(storageService, 'loadChecklists')
+      //   .mockResolvedValue(testLoadData);
 
       const observerSpy = subscribeSpyTo(service.getChecklists());
       await service.load();
@@ -48,9 +55,9 @@ describe('ChecklistService', () => {
   });
 
   describe('getChecklists()', () => {
-    it('should emit an empty array initially', () => {
+    it('should not emit if no values have been added/loaded', () => {
       const observerSpy = subscribeSpyTo(service.getChecklists());
-      expect(observerSpy.getLastValue()).toEqual([]);
+      expect(observerSpy.getValuesLength()).toBe(0);
     });
 
     it('should pass checklist data to saveChecklists method of storage service when it emits', () => {
@@ -84,9 +91,9 @@ describe('ChecklistService', () => {
       service.add(testChecklist);
 
       expect(
-        observerSpy
-          .getLastValue()
-          .find((checklist) => checklist.title === testChecklist.title)
+        (observerSpy.getLastValue() as any).find(
+          (checklist: any) => checklist.title === testChecklist.title
+        )
       ).toBeTruthy();
     });
 
@@ -96,9 +103,9 @@ describe('ChecklistService', () => {
       service.add(testChecklist);
 
       expect(
-        observerSpy
-          .getLastValue()
-          .find((checklist) => checklist.title === testChecklist.title).id
+        (observerSpy.getLastValue() as any).find(
+          (checklist: any) => checklist.title === testChecklist.title
+        ).id
       ).toEqual('hello-there');
     });
 
@@ -109,9 +116,9 @@ describe('ChecklistService', () => {
       service.add(testChecklist);
 
       expect(
-        observerSpy
-          .getLastValue()
-          .filter((checklist) => checklist.id === 'hello-there').length
+        (observerSpy.getLastValue() as any).filter(
+          (checklist: any) => checklist.id === 'hello-there'
+        ).length
       ).toEqual(1);
     });
   });

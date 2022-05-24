@@ -12,7 +12,7 @@ import { ChecklistListComponent } from './checklist-list.component';
   template: '',
 })
 export class MockChecklistComponent {
-  @Input() checklists: Checklist[];
+  @Input() checklists!: Checklist[];
 }
 
 describe('ChecklistListComponent', () => {

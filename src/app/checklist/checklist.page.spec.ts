@@ -120,7 +120,7 @@ describe('ChecklistPage', () => {
 
   describe('checklistItemForm', () => {
     it('should require a title field', () => {
-      const titleControl = component.checklistItemForm.get('title');
+      const titleControl = component.checklistItemForm.get('title') as any;
 
       titleControl.setValue('');
 

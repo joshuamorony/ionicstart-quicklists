@@ -18,7 +18,7 @@ import { ChecklistItemListComponent } from './checklist-item-list.component';
   template: '',
 })
 export class MockChecklistItemListComponent {
-  @Input() checklistItems: ChecklistItem[];
+  @Input() checklistItems!: ChecklistItem[];
   @Output() toggle = new EventEmitter<string>();
 }
 

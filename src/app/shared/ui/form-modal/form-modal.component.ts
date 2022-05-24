@@ -15,8 +15,8 @@ import { ModalController } from '@ionic/angular';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormModalComponent {
-  @Input() title: string;
-  @Input() formGroup: FormGroup;
+  @Input() title!: string;
+  @Input() formGroup!: FormGroup;
 
   @Output() save = new EventEmitter<boolean>();
 

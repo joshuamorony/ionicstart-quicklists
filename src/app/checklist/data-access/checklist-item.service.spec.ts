@@ -60,7 +60,9 @@ describe('ChecklistItemService', () => {
       const observerSpy = subscribeSpyTo(
         service.getItemsByChecklistId(testChecklistIdTwo)
       );
-      expect(observerSpy.getLastValue()[0].title).toEqual(testItemTwo.title);
+      expect((observerSpy.getLastValue() as any)[0].title).toEqual(
+        testItemTwo.title
+      );
     });
 
     it('should emit empty array if no items exist for checklist', () => {
@@ -79,8 +81,8 @@ describe('ChecklistItemService', () => {
       );
 
       const data = [
-        ...observerSpy.getLastValue()[0],
-        ...observerSpy.getLastValue()[1],
+        ...(observerSpy.getLastValue() as any)[0],
+        ...(observerSpy.getLastValue() as any)[1],
       ];
 
       expect(storageService.saveChecklistItems).toHaveBeenLastCalledWith(data);
@@ -94,9 +96,9 @@ describe('ChecklistItemService', () => {
       );
 
       expect(
-        observerSpy
-          .getLastValue()
-          .find((checklist) => checklist.title === testItem.title)
+        (observerSpy.getLastValue() as any).find(
+          (checklist: any) => checklist.title === testItem.title
+        )
       ).toBeTruthy();
     });
   });
@@ -107,12 +109,12 @@ describe('ChecklistItemService', () => {
         service.getItemsByChecklistId(testChecklistId)
       );
 
-      const item = observerSpy.getLastValue()[0];
+      const item = (observerSpy.getLastValue() as any)[0];
       const checkedStateBefore = item.checked;
 
       service.toggle(item.id);
 
-      const checkedStateAfter = observerSpy.getLastValue()[0].checked;
+      const checkedStateAfter = (observerSpy.getLastValue() as any)[0].checked;
 
       expect(checkedStateBefore).toEqual(!checkedStateAfter);
     });
@@ -124,17 +126,17 @@ describe('ChecklistItemService', () => {
         service.getItemsByChecklistId(testChecklistId)
       );
 
-      const itemsBefore = observerSpy.getLastValue();
+      const itemsBefore = observerSpy.getLastValue() as any;
 
-      itemsBefore.forEach((item) => {
+      itemsBefore.forEach((item: any) => {
         service.toggle(item.id);
       });
 
       service.reset(testChecklistId);
 
-      const itemsAfter = observerSpy.getLastValue();
+      const itemsAfter = observerSpy.getLastValue() as any;
 
-      itemsAfter.forEach((item) => {
+      itemsAfter.forEach((item: any) => {
         expect(item.checked).toBe(false);
       });
     });

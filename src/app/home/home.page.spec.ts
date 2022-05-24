@@ -30,7 +30,7 @@ describe('HomePage', () => {
 
   describe('checklistForm', () => {
     it('should require a title field', () => {
-      const titleControl = component.checklistForm.get('title');
+      const titleControl = component.checklistForm.get('title') as any;
 
       titleControl.setValue('');
 

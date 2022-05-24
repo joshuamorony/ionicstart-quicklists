@@ -16,8 +16,10 @@ export class ChecklistPage {
   vm$ = this.route.paramMap.pipe(
     switchMap((paramMap) =>
       combineLatest([
-        this.checklistService.getChecklistById(paramMap.get('id')),
-        this.checklistItemService.getItemsByChecklistId(paramMap.get('id')),
+        this.checklistService.getChecklistById(paramMap.get('id') as string),
+        this.checklistItemService.getItemsByChecklistId(
+          paramMap.get('id') as string
+        ),
       ])
     ),
     map(([checklist, items]) => ({ checklist, items }))

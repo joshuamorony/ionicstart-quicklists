@@ -14,7 +14,7 @@ import { ChecklistItem } from 'src/app/shared/interfaces/checklist-item';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChecklistItemListComponent {
-  @Input() checklistItems: ChecklistItem[];
+  @Input() checklistItems!: ChecklistItem[];
   @Output() toggle = new EventEmitter<string>();
 
   toggleItem(itemId: string) {

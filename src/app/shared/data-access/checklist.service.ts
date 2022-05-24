@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map, shareReplay, tap } from 'rxjs/operators';
+import { filter, map, shareReplay, tap } from 'rxjs/operators';
 import { Checklist } from '../interfaces/checklist';
 import { StorageService } from './storage.service';
 
@@ -9,7 +9,10 @@ import { StorageService } from './storage.service';
 })
 export class ChecklistService {
   private checklists$ = new BehaviorSubject<Checklist[]>([]);
-  private getChecklists$: Observable<Checklist[]>;
+  private getChecklists$: Observable<Checklist[]> = this.checklists$.pipe(
+    tap((checklists) => this.storageService.saveChecklists(checklists)), // trigger a save whenever this stream emits new data
+    shareReplay(1) // share this stream with multiple subscribers, instead of creating a new one for each
+  );
 
   constructor(private storageService: StorageService) {}
 
@@ -19,18 +22,12 @@ export class ChecklistService {
   }
 
   getChecklists() {
-    if (!this.getChecklists$) {
-      this.getChecklists$ = this.checklists$.pipe(
-        tap((checklists) => this.storageService.saveChecklists(checklists)),
-        shareReplay(1)
-      );
-    }
-
     return this.getChecklists$;
   }
 
   getChecklistById(id: string) {
     return this.getChecklists().pipe(
+      filter((checklists) => checklists.length > 0), // don't emit if checklists haven't loaded yet
       map((checklists) => checklists.find((checklist) => checklist.id === id))
     );
   }
