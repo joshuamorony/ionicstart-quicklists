@@ -5,6 +5,7 @@ import { StorageService } from './storage.service';
 
 describe('StorageService', () => {
   let service: StorageService;
+  let storage: Storage;
 
   const testLoadData = {};
 
@@ -26,6 +27,7 @@ describe('StorageService', () => {
       ],
     });
     service = TestBed.inject(StorageService);
+    storage = TestBed.inject(Storage);
   });
 
   it('should be created', () => {
@@ -38,6 +40,16 @@ describe('StorageService', () => {
       expect(getMock).toHaveBeenCalledWith('checklists');
       expect(result).toEqual(testLoadData);
     });
+
+    it('should return empty array if key is undefined', async () => {
+      jest.spyOn(storage, 'create').mockResolvedValue({
+        get: jest.fn().mockResolvedValue(undefined),
+      } as any);
+
+      await service.init();
+      const result = await service.loadChecklists();
+      expect(result).toEqual([]);
+    });
   });
 
   describe('loadChecklistItems()', () => {
@@ -45,6 +57,16 @@ describe('StorageService', () => {
       const result = await service.loadChecklistItems();
       expect(getMock).toHaveBeenCalledWith('checklistItems');
       expect(result).toEqual(testLoadData);
+    });
+
+    it('should return empty array if key is undefined', async () => {
+      jest.spyOn(storage, 'create').mockResolvedValue({
+        get: jest.fn().mockResolvedValue(undefined),
+      } as any);
+
+      await service.init();
+      const result = await service.loadChecklistItems();
+      expect(result).toEqual([]);
     });
   });
 

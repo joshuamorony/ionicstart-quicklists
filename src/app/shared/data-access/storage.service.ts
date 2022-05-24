@@ -18,7 +18,7 @@ export class StorageService {
   }
 
   async loadChecklists(): Promise<Checklist[]> {
-    return await this.storage?.get('checklists');
+    return (await this.storage?.get('checklists')) ?? [];
   }
 
   async saveChecklists(checklists: Checklist[]) {
@@ -26,7 +26,7 @@ export class StorageService {
   }
 
   async loadChecklistItems(): Promise<ChecklistItem[]> {
-    return await this.storage?.get('checklistItems');
+    return (await this.storage?.get('checklistItems')) ?? [];
   }
 
   async saveChecklistItems(checklistItems: ChecklistItem[]) {
