@@ -1,11 +1,21 @@
 <ion-list>
-  <ion-item
-    data-test="checklist-item"
-    *ngFor="let checklist of checklists; trackBy: trackByFn"
-    button
-    routerLink="/checklist/{{ checklist.id }}"
-    routerDirection="forward"
-  >
-    <ion-label>{{ checklist.title }}</ion-label>
-  </ion-item>
+  <ion-item-sliding *ngFor="let checklist of checklists; trackBy: trackByFn">
+    <ion-item
+      data-test="checklist-item"
+      button
+      routerLink="/checklist/{{ checklist.id }}"
+      routerDirection="forward"
+    >
+      <ion-label>{{ checklist.title }}</ion-label>
+    </ion-item>
+
+    <ion-item-options side="end">
+      <ion-item-option
+        (click)="delete.emit(checklist.id)"
+        data-test="delete-checklist"
+      >
+        <ion-icon name="trash" slot="icon-only"></ion-icon>
+      </ion-item-option>
+    </ion-item-options>
+  </ion-item-sliding>
 </ion-list>

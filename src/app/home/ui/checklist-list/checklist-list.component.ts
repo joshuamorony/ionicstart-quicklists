@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+} from '@angular/core';
 import { Checklist } from 'src/app/shared/interfaces/checklist';
 
 @Component({
@@ -9,6 +15,7 @@ import { Checklist } from 'src/app/shared/interfaces/checklist';
 })
 export class ChecklistListComponent {
   @Input() checklists!: Checklist[];
+  @Output() delete = new EventEmitter<string>();
 
   constructor() {}
 

@@ -2,6 +2,7 @@ import {
   createChecklist,
   getAddChecklistButton,
   getCancelButton,
+  getCancelDeleteButton,
   getChecklistDetailTitle,
   getChecklistItems,
   getConfirmDeleteButton,
@@ -41,5 +42,13 @@ describe('Home', () => {
     getDeleteChecklistButton().first().click();
     getConfirmDeleteButton().click();
     getChecklistItems().should('not.contain.text', testTitle);
+  });
+
+  it('should be able to cancel deleting a checklist', () => {
+    const testTitle = 'preflight';
+    createChecklist(testTitle);
+    getDeleteChecklistButton().first().click();
+    getCancelDeleteButton().click();
+    getChecklistItems().should('contain.text', testTitle);
   });
 });

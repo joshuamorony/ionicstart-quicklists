@@ -6,6 +6,7 @@ import { IonicModule } from '@ionic/angular';
 import { Checklist } from '../../../shared/interfaces/checklist';
 
 import { ChecklistListComponent } from './checklist-list.component';
+import { subscribeSpyTo } from '@hirez_io/observer-spy';
 
 @Component({
   selector: 'app-checklist-list',
@@ -50,6 +51,24 @@ describe('ChecklistListComponent', () => {
       );
 
       expect(listItems.length).toEqual(testData.length);
+    });
+  });
+
+  describe('@Output delete', () => {
+    it('should emit item id to be deleted', () => {
+      const testData = [{ id: '1', title: 'test' }] as any;
+      component.checklists = testData;
+
+      const observerSpy = subscribeSpyTo(component.delete);
+
+      fixture.detectChanges();
+
+      const deleteButton = fixture.debugElement.query(
+        By.css('[data-test="delete-checklist"]')
+      );
+      deleteButton.nativeElement.click();
+
+      expect(observerSpy.getLastValue()).toEqual(testData[0].id);
     });
   });
 });
