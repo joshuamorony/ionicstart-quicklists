@@ -41,7 +41,7 @@ describe('Home', () => {
     createChecklist(testTitle);
     getDeleteChecklistButton().first().click({ force: true });
     getConfirmDeleteButton().click();
-    getChecklistItems().should('not.contain.text', testTitle);
+    getChecklistItems().should('not.exist');
   });
 
   it('should be able to cancel deleting a checklist', () => {
