@@ -119,4 +119,10 @@ describe('ChecklistService', () => {
       ).toEqual(1);
     });
   });
+
+  describe('remove()', () => {
+    it('should cause getChecklist() to emit without the checklist being removed', () => {});
+
+    it('should call removeAllItemsForChecklist() method for the checklist being deleted', () => {});
+  });
 });

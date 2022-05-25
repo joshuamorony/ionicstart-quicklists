@@ -10,7 +10,10 @@
 </ion-header>
 
 <ion-content>
-  <app-checklist-list [checklists]="checklists$ | async"></app-checklist-list>
+  <app-checklist-list
+    [checklists]="checklists$ | async"
+    (delete)="deleteChecklist($event)"
+  ></app-checklist-list>
 </ion-content>
 
 <ion-modal trigger="open-modal-trigger">

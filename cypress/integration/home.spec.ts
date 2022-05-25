@@ -39,7 +39,7 @@ describe('Home', () => {
   it('should be able to delete a checklist', () => {
     const testTitle = 'preflight';
     createChecklist(testTitle);
-    getDeleteChecklistButton().first().click();
+    getDeleteChecklistButton().first().click({ force: true });
     getConfirmDeleteButton().click();
     getChecklistItems().should('not.contain.text', testTitle);
   });
@@ -47,7 +47,7 @@ describe('Home', () => {
   it('should be able to cancel deleting a checklist', () => {
     const testTitle = 'preflight';
     createChecklist(testTitle);
-    getDeleteChecklistButton().first().click();
+    getDeleteChecklistButton().first().click({ force: true });
     getCancelDeleteButton().click();
     getChecklistItems().should('contain.text', testTitle);
   });
