@@ -141,4 +141,19 @@ describe('ChecklistItemService', () => {
       });
     });
   });
+
+  describe('removeAllItemsForChecklist()', () => {
+    it('should remove all items matching given checklist id', () => {
+      service.add(testItem, testChecklistId);
+      service.add(testItem, testChecklistId);
+
+      service.removeAllItemsForChecklist(testChecklistId);
+
+      const observerSpy = subscribeSpyTo(
+        service.getItemsByChecklistId(testChecklistId)
+      );
+
+      expect(observerSpy.getLastValue()).toEqual([]);
+    });
+  });
 });

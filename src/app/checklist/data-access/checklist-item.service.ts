@@ -53,5 +53,11 @@ export class ChecklistItemService {
     this.checklistItems$.next([...this.checklistItems$.value, newItem]);
   }
 
-  removeAllItemsForChecklist(checklistId: string) {}
+  removeAllItemsForChecklist(checklistId: string) {
+    const modifiedItems = this.checklistItems$.value.filter(
+      (item) => item.checklistId !== checklistId
+    );
+
+    this.checklistItems$.next(modifiedItems);
+  }
 }
