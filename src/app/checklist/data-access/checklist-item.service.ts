@@ -52,4 +52,6 @@ export class ChecklistItemService {
 
     this.checklistItems$.next([...this.checklistItems$.value, newItem]);
   }
+
+  removeAllItemsForChecklist(checklistId: string) {}
 }

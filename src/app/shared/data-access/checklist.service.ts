@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { filter, map, shareReplay, tap } from 'rxjs/operators';
+import { ChecklistItemService } from '../../checklist/data-access/checklist-item.service';
 import { Checklist } from '../interfaces/checklist';
 import { StorageService } from './storage.service';
 
@@ -19,7 +20,10 @@ export class ChecklistService {
     shareReplay(1)
   );
 
-  constructor(private storageService: StorageService) {}
+  constructor(
+    private storageService: StorageService,
+    private checklistItemService: ChecklistItemService
+  ) {}
 
   async load() {
     const checklists = await this.storageService.loadChecklists();
@@ -46,7 +50,15 @@ export class ChecklistService {
     this.checklists$.next([...this.checklists$.value, newChecklist]);
   }
 
-  remove(id: string) {}
+  remove(id: string) {
+    const modifiedChecklists = this.checklists$.value.filter(
+      (checklist) => checklist.id !== id
+    );
+
+    this.checklistItemService.removeAllItemsForChecklist(id);
+
+    this.checklists$.next(modifiedChecklists);
+  }
 
   private generateSlug(title: string) {
     // NOTE: This is a simplistic slug generator and will not handle things like special characters.

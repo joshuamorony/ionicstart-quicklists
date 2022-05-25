@@ -1,14 +1,17 @@
 import { TestBed } from '@angular/core/testing';
 import { subscribeSpyTo } from '@hirez_io/observer-spy';
+import { ChecklistItemService } from '../../checklist/data-access/checklist-item.service';
 
 import { ChecklistService } from './checklist.service';
 import { StorageService } from './storage.service';
 
 jest.mock('./storage.service');
+jest.mock('../../checklist/data-access/checklist-item.service');
 
 describe('ChecklistService', () => {
   let service: ChecklistService;
   let storageService: StorageService;
+  let checklistItemService: ChecklistItemService;
 
   const testChecklistOne = {
     id: 'abc',
@@ -32,10 +35,12 @@ describe('ChecklistService', () => {
             saveChecklists: jest.fn(),
           },
         },
+        ChecklistItemService,
       ],
     });
     service = TestBed.inject(ChecklistService);
     storageService = TestBed.inject(StorageService);
+    checklistItemService = TestBed.inject(ChecklistItemService);
   });
 
   it('should be created', () => {
@@ -121,8 +126,24 @@ describe('ChecklistService', () => {
   });
 
   describe('remove()', () => {
-    it('should cause getChecklist() to emit without the checklist being removed', () => {});
+    it('should remove the checklist that matches the id', () => {
+      service.add(testChecklistOne);
 
-    it('should call removeAllItemsForChecklist() method for the checklist being deleted', () => {});
+      service.remove(testChecklistOne.id);
+
+      const observerSpy = subscribeSpyTo(
+        service.getChecklistById(testChecklistOne.id)
+      );
+
+      expect(observerSpy.getLastValue()).toBe(undefined);
+    });
+
+    it('should call removeAllItemsForChecklist() method for the checklist being deleted', () => {
+      service.add(testChecklistOne);
+      service.remove(testChecklistOne.id);
+      expect(
+        checklistItemService.removeAllItemsForChecklist
+      ).toHaveBeenCalledWith(testChecklistOne.id);
+    });
   });
 });
