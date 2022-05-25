@@ -16,6 +16,7 @@ import { ChecklistItem } from 'src/app/shared/interfaces/checklist-item';
 export class ChecklistItemListComponent {
   @Input() checklistItems!: ChecklistItem[];
   @Output() toggle = new EventEmitter<string>();
+  @Output() delete = new EventEmitter<string>();
 
   toggleItem(itemId: string) {
     this.toggle.emit(itemId);

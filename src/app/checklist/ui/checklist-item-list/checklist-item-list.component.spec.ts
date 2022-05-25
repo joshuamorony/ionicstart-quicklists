@@ -20,6 +20,7 @@ import { ChecklistItemListComponent } from './checklist-item-list.component';
 export class MockChecklistItemListComponent {
   @Input() checklistItems!: ChecklistItem[];
   @Output() toggle = new EventEmitter<string>();
+  @Output() delete = new EventEmitter<string>();
 }
 
 describe('ChecklistItemListComponent', () => {
@@ -79,6 +80,30 @@ describe('ChecklistItemListComponent', () => {
       );
 
       item.nativeElement.click();
+
+      expect(observerSpy.getLastValue()).toEqual(testItem.id);
+    });
+  });
+
+  describe('@Output delete', () => {
+    it('should emit item id to be deleted', () => {
+      const testItem = {
+        id: '1',
+        checklistId: '1',
+        checked: false,
+        title: 'hello',
+      };
+
+      component.checklistItems = [testItem];
+
+      fixture.detectChanges();
+
+      const observerSpy = subscribeSpyTo(component.delete);
+
+      const deleteButton = fixture.debugElement.query(
+        By.css('[data-test="delete-checklist-item"]')
+      );
+      deleteButton.nativeElement.click();
 
       expect(observerSpy.getLastValue()).toEqual(testItem.id);
     });

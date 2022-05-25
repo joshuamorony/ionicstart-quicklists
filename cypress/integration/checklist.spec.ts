@@ -3,6 +3,7 @@ import {
   getCheckboxForItem,
   getChecklistBackButton,
   getChecklistItems,
+  getDeleteChecklistItemButton,
   getItemsForChecklist,
   getResetButton,
   navigateToChecklistPage,
@@ -46,5 +47,10 @@ describe('Checklist page', () => {
 
     getCheckboxForItem().first().should('not.have.class', 'checkbox-checked');
     getCheckboxForItem().last().should('not.have.class', 'checkbox-checked');
+  });
+
+  it('should be able to delete a checklist item', () => {
+    getDeleteChecklistItemButton().first().click({ force: true });
+    getItemsForChecklist().should('not.exist');
   });
 });

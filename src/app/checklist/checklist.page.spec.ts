@@ -55,6 +55,7 @@ describe('ChecklistPage', () => {
           provide: ChecklistItemService,
           useValue: {
             add: jest.fn(),
+            remove: jest.fn(),
             toggle: jest.fn(),
             reset: jest.fn(),
             getItemsByChecklistId: jest.fn().mockReturnValue(of(testItems)),
@@ -150,6 +151,18 @@ describe('ChecklistPage', () => {
       component.resetChecklistItems(testChecklist.id);
 
       expect(checklistItemService.reset).toHaveBeenCalledWith(testChecklist.id);
+    });
+  });
+
+  describe('deleteChecklistItem()', () => {
+    it('should call the remove method of the ChecklistItem service for the selected item', () => {
+      const checklistItemService =
+        fixture.debugElement.injector.get(ChecklistItemService);
+      const testId = '1';
+
+      component.deleteChecklistItem(testId);
+
+      expect(checklistItemService.remove).toHaveBeenCalledWith(testId);
     });
   });
 });

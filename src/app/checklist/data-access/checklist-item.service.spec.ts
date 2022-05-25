@@ -156,4 +156,21 @@ describe('ChecklistItemService', () => {
       expect(observerSpy.getLastValue()).toEqual([]);
     });
   });
+
+  describe('remove()', () => {
+    it('should remove item matching id', () => {
+      const observerSpy = subscribeSpyTo(
+        service.getItemsByChecklistId(testChecklistId)
+      );
+
+      const items = observerSpy.getLastValue() as any;
+      const itemToRemove = items[0];
+
+      service.remove(itemToRemove.id);
+
+      expect(
+        observerSpy.getLastValue()?.find((item) => item.id === itemToRemove.id)
+      ).toBe(undefined);
+    });
+  });
 });

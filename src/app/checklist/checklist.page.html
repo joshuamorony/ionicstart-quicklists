@@ -32,6 +32,7 @@
     *ngIf="vm$ | async as vm"
     [checklistItems]="vm.items"
     (toggle)="toggleChecklistItem($event)"
+    (delete)="deleteChecklistItem($event)"
   ></app-checklist-item-list>
 </ion-content>
 
