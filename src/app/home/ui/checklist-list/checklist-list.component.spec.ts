@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+} from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { By } from '@angular/platform-browser';
@@ -14,6 +20,7 @@ import { subscribeSpyTo } from '@hirez_io/observer-spy';
 })
 export class MockChecklistComponent {
   @Input() checklists!: Checklist[];
+  @Output() delete = new EventEmitter<string>();
 }
 
 describe('ChecklistListComponent', () => {

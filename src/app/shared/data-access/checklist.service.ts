@@ -46,6 +46,8 @@ export class ChecklistService {
     this.checklists$.next([...this.checklists$.value, newChecklist]);
   }
 
+  remove(id: string) {}
+
   private generateSlug(title: string) {
     // NOTE: This is a simplistic slug generator and will not handle things like special characters.
     let slug = title.toLowerCase().replace(/\s+/g, '-');
