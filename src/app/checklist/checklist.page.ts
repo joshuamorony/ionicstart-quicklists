@@ -2,8 +2,9 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { combineLatest } from 'rxjs';
-import { catchError, map, share, switchMap, tap } from 'rxjs/operators';
+import { catchError, filter, map, share, switchMap, tap } from 'rxjs/operators';
 import { ChecklistService } from '../shared/data-access/checklist.service';
+import { Checklist } from '../shared/interfaces/checklist';
 import { ChecklistItemService } from './data-access/checklist-item.service';
 
 @Component({
@@ -16,7 +17,10 @@ export class ChecklistPage {
   vm$ = this.route.paramMap.pipe(
     switchMap((paramMap) =>
       combineLatest([
-        this.checklistService.getChecklistById(paramMap.get('id') as string),
+        this.checklistService
+          .getChecklistById(paramMap.get('id') as string)
+          // just to please the TypeScript compiler for potentially undefined values
+          .pipe(map((checklist) => checklist as Checklist)),
         this.checklistItemService.getItemsByChecklistId(
           paramMap.get('id') as string
         ),
