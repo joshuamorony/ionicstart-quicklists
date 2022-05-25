@@ -15,3 +15,7 @@
 
 // When a command from ./commands is ready to use, import with `import './commands'` syntax
 // import './commands';
+
+Cypress.on('window:before:load', (win) => {
+  win.indexedDB.deleteDatabase('_ionicstorage');
+});

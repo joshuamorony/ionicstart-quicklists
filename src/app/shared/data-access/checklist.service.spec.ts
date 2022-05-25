@@ -29,6 +29,7 @@ describe('ChecklistService', () => {
           provide: StorageService,
           useValue: {
             loadChecklists: jest.fn().mockResolvedValue(testLoadData),
+            saveChecklists: jest.fn(),
           },
         },
       ],
@@ -43,10 +44,6 @@ describe('ChecklistService', () => {
 
   describe('load()', () => {
     it('should trigger result from loadChecklists from storage service to emit on getChecklists()', async () => {
-      // jest
-      //   .spyOn(storageService, 'loadChecklists')
-      //   .mockResolvedValue(testLoadData);
-
       const observerSpy = subscribeSpyTo(service.getChecklists());
       await service.load();
 
@@ -55,9 +52,9 @@ describe('ChecklistService', () => {
   });
 
   describe('getChecklists()', () => {
-    it('should not emit if no values have been added/loaded', () => {
+    it('should emit empty array initially', () => {
       const observerSpy = subscribeSpyTo(service.getChecklists());
-      expect(observerSpy.getValuesLength()).toBe(0);
+      expect(observerSpy.getLastValue()).toEqual([]);
     });
 
     it('should pass checklist data to saveChecklists method of storage service when it emits', () => {
