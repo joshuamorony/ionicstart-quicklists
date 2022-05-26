@@ -6,3 +6,5 @@ export const getDeleteChecklistButton = () =>
   cy.get('[data-test="delete-checklist"]');
 export const getConfirmDeleteButton = () => cy.get('.confirm-delete-button');
 export const getCancelDeleteButton = () => cy.get('.cancel-delete-button');
+export const getEditChecklistButton = () =>
+  cy.get('[data-test="edit-checklist"]');

@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { AlertController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { ChecklistService } from '../shared/data-access/checklist.service';
+import { FormModalComponent } from '../shared/ui/form-modal/form-modal.component';
 
 @Component({
   selector: 'app-home',
@@ -19,7 +20,8 @@ export class HomePage {
   constructor(
     private fb: FormBuilder,
     private checklistService: ChecklistService,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private modalCtrl: ModalController
   ) {}
 
   addChecklist() {
@@ -48,5 +50,14 @@ export class HomePage {
     });
 
     alert.present();
+  }
+
+  async editChecklist(id: string) {
+    const formModal = await this.modalCtrl.create({
+      component: FormModalComponent,
+      componentProps: {},
+    });
+
+    formModal.present();
   }
 }

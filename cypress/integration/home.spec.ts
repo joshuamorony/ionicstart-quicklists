@@ -1,5 +1,6 @@
 import {
   createChecklist,
+  editChecklist,
   getAddChecklistButton,
   getCancelButton,
   getCancelDeleteButton,
@@ -7,6 +8,7 @@ import {
   getChecklistItems,
   getConfirmDeleteButton,
   getDeleteChecklistButton,
+  getEditChecklistButton,
   getFormModal,
   navigateToHomePage,
 } from '../support/utils';
@@ -50,5 +52,16 @@ describe('Home', () => {
     getDeleteChecklistButton().first().click({ force: true });
     getCancelDeleteButton().click();
     getChecklistItems().should('contain.text', testTitle);
+  });
+
+  it('should be able to edit a checklist', () => {
+    const testTitle = 'preflight';
+    createChecklist(testTitle);
+    getEditChecklistButton().first().click({ force: true });
+
+    const editedTitle = 'newtitle';
+    editChecklist(editedTitle);
+
+    getChecklistItems().should('contain.text', editedTitle);
   });
 });
