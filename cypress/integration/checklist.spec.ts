@@ -1,9 +1,11 @@
 import {
   createChecklistItem,
+  editChecklistItem,
   getCheckboxForItem,
   getChecklistBackButton,
   getChecklistItems,
   getDeleteChecklistItemButton,
+  getEditChecklistItemButton,
   getItemsForChecklist,
   getResetButton,
   navigateToChecklistPage,
@@ -52,5 +54,16 @@ describe('Checklist page', () => {
   it('should be able to delete a checklist item', () => {
     getDeleteChecklistItemButton().first().click({ force: true });
     getItemsForChecklist().should('not.exist');
+  });
+
+  it('should be able to edit a checklist item', () => {
+    createChecklistItem(testTitle);
+    cy.wait(500);
+    getEditChecklistItemButton().first().click({ force: true });
+
+    const editedTitle = 'newtitle';
+    editChecklistItem(editedTitle);
+
+    getItemsForChecklist().should('contain.text', editedTitle);
   });
 });

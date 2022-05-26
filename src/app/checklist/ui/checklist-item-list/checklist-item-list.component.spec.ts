@@ -108,4 +108,28 @@ describe('ChecklistItemListComponent', () => {
       expect(observerSpy.getLastValue()).toEqual(testItem.id);
     });
   });
+
+  describe('@Output edit', () => {
+    it('should emit item to be edited', () => {
+      const testItem = {
+        id: '1',
+        checklistId: '1',
+        checked: false,
+        title: 'hello',
+      };
+
+      component.checklistItems = [testItem];
+
+      fixture.detectChanges();
+
+      const observerSpy = subscribeSpyTo(component.edit);
+
+      const editButton = fixture.debugElement.query(
+        By.css('[data-test="edit-checklist-item"]')
+      );
+      editButton.nativeElement.click();
+
+      expect(observerSpy.getLastValue()).toEqual(testItem);
+    });
+  });
 });

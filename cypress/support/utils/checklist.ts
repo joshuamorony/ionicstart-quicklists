@@ -15,6 +15,11 @@ export const createChecklistItem = (title: string) => {
   getSaveButton().click();
 };
 
+export const editChecklistItem = (title: string) => {
+  getTitleField().type(title, { delay: 0 });
+  getSaveButton().click();
+};
+
 export const getResetButton = () => cy.get('[data-test="reset-items"]');
 
 export const getChecklistBackButton = () =>
@@ -34,3 +39,6 @@ export const getCheckboxForItem = () =>
 
 export const getDeleteChecklistItemButton = () =>
   cy.get('[data-test="delete-checklist-item"]');
+
+export const getEditChecklistItemButton = () =>
+  cy.get('[data-test="edit-checklist-item"]');

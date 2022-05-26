@@ -17,6 +17,7 @@ export class ChecklistItemListComponent {
   @Input() checklistItems!: ChecklistItem[];
   @Output() toggle = new EventEmitter<string>();
   @Output() delete = new EventEmitter<string>();
+  @Output() edit = new EventEmitter<ChecklistItem>();
 
   toggleItem(itemId: string) {
     this.toggle.emit(itemId);
