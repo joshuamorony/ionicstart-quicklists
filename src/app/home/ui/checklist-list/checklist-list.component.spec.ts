@@ -21,6 +21,7 @@ import { subscribeSpyTo } from '@hirez_io/observer-spy';
 export class MockChecklistComponent {
   @Input() checklists!: Checklist[];
   @Output() delete = new EventEmitter<string>();
+  @Output() edit = new EventEmitter<Checklist>();
 }
 
 describe('ChecklistListComponent', () => {
@@ -80,7 +81,7 @@ describe('ChecklistListComponent', () => {
   });
 
   describe('@Output edit', () => {
-    it('should emit item id to be edited', () => {
+    it('should emit checklist to be edited', () => {
       const testData = [{ id: '1', title: 'test' }] as any;
       component.checklists = testData;
 
@@ -93,7 +94,7 @@ describe('ChecklistListComponent', () => {
       );
       editButton.nativeElement.click();
 
-      expect(observerSpy.getLastValue()).toEqual(testData[0].id);
+      expect(observerSpy.getLastValue()).toEqual(testData[0]);
     });
   });
 });

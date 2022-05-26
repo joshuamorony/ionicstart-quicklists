@@ -1,14 +1,9 @@
-import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  Component,
-  ViewChild,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { AlertController } from '@ionic/angular';
-import { merge, Observable, Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { ChecklistService } from '../shared/data-access/checklist.service';
-import { ChecklistListComponent } from './ui/checklist-list/checklist-list.component';
+import { Checklist } from '../shared/interfaces/checklist';
 
 @Component({
   selector: 'app-home',
@@ -17,9 +12,8 @@ import { ChecklistListComponent } from './ui/checklist-list/checklist-list.compo
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomePage {
-  // @ViewChild(ChecklistListComponent) checklistList!: ChecklistListComponent;
-  // checklistIdBeingEdited$: Observable<string | boolean> | undefined;
-  // currentlyEditing$ = new Subject<boolean>();
+  formModalIsOpen$ = new BehaviorSubject<boolean>(false);
+  checklistIdBeingEdited$ = new BehaviorSubject<string | null>(null);
 
   checklists$ = this.checklistService.getChecklists();
 
@@ -33,19 +27,20 @@ export class HomePage {
     private alertCtrl: AlertController
   ) {}
 
-  // ngAfterViewInit() {
-  //   this.checklistIdBeingEdited$ = merge(
-  //     this.checklistList.edit,
-  //     this.currentlyEditing$
-  //   );
-  // }
-
   addChecklist() {
     this.checklistService.add(this.checklistForm.value);
   }
 
-  editChecklist(checklistId: string | boolean) {
-    // this.checklistService.update(checklistId, this.checklistForm.value);
+  openEditModal(checklist: Checklist) {
+    this.checklistForm.patchValue({
+      title: checklist.title,
+    });
+    this.checklistIdBeingEdited$.next(checklist.id);
+    this.formModalIsOpen$.next(true);
+  }
+
+  editChecklist(checklistId: string) {
+    this.checklistService.update(checklistId, this.checklistForm.value);
   }
 
   async deleteChecklist(id: string) {

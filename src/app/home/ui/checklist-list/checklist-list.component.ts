@@ -16,7 +16,7 @@ import { Checklist } from 'src/app/shared/interfaces/checklist';
 export class ChecklistListComponent {
   @Input() checklists!: Checklist[] | null;
   @Output() delete = new EventEmitter<string>();
-  @Output() edit = new EventEmitter<string>();
+  @Output() edit = new EventEmitter<Checklist>();
 
   constructor() {}
 

@@ -146,4 +146,32 @@ describe('ChecklistService', () => {
       ).toHaveBeenCalledWith(testChecklistOne.id);
     });
   });
+
+  describe('update()', () => {
+    const formData = { title: 'new title' };
+
+    it('should update the title to the new value supplied for the checklist id supplied', () => {
+      service.add(testChecklistOne);
+
+      service.update(testChecklistOne.id, formData);
+
+      const observerSpy = subscribeSpyTo(
+        service.getChecklistById(testChecklistOne.id)
+      );
+
+      expect(observerSpy.getLastValue()?.title).toEqual(formData.title);
+    });
+
+    it('should not update a checklist that does not match the id supplied', () => {
+      service.add(testChecklistOne);
+
+      service.update(testChecklistOne.id, formData);
+
+      const observerSpy = subscribeSpyTo(
+        service.getChecklistById(testChecklistTwo.id)
+      );
+
+      expect(observerSpy.getLastValue()?.title).not.toEqual(formData.title);
+    });
+  });
 });

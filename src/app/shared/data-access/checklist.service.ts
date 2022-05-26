@@ -60,6 +60,16 @@ export class ChecklistService {
     this.checklists$.next(modifiedChecklists);
   }
 
+  update(id: string, editedData: Pick<Checklist, 'title'>) {
+    const modifiedChecklists = this.checklists$.value.map((checklist) =>
+      checklist.id === id
+        ? { ...checklist, title: editedData.title }
+        : checklist
+    );
+
+    this.checklists$.next(modifiedChecklists);
+  }
+
   private generateSlug(title: string) {
     // NOTE: This is a simplistic slug generator and will not handle things like special characters.
     let slug = title.toLowerCase().replace(/\s+/g, '-');

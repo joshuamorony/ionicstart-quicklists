@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { AlertController, IonicModule, ModalController } from '@ionic/angular';
+import { of } from 'rxjs';
 import { ChecklistService } from '../shared/data-access/checklist.service';
 
 import { HomePage } from './home.page';
@@ -98,16 +99,43 @@ describe('HomePage', () => {
   });
 
   describe('editChecklist()', () => {
-    it('should launch a modal', async () => {
-      await component.editChecklist('1');
-      expect(presentMock).toHaveBeenCalled();
-    });
+    const testChecklist = { id: '1', title: 'hello' };
 
-    it('should pass the checklist id and new data to update method of checklist service after modal is dismissed', () => {
+    it('should pass the checklist id being edited and form data to the update method of the checklist service', () => {
       const checklistService =
         fixture.debugElement.injector.get(ChecklistService);
 
-      const modalCtrl = fixture.debugElement.injector.get(ModalController);
+      const testChecklistId = '1';
+      component.editChecklist(testChecklistId);
+
+      expect(checklistService.update).toHaveBeenCalledWith(
+        testChecklistId,
+        component.checklistForm.value
+      );
+    });
+
+    it('should set the existing title for the checklist being edited in the form modal', () => {
+      const checklistList = fixture.debugElement.query(
+        By.css('app-checklist-list')
+      );
+
+      checklistList.triggerEventHandler('edit', testChecklist);
+
+      expect(component.checklistForm.value.title).toEqual(testChecklist.title);
+    });
+
+    it('should open the form modal when item is being edited', () => {
+      const checklistList = fixture.debugElement.query(
+        By.css('app-checklist-list')
+      );
+
+      checklistList.triggerEventHandler('edit', testChecklist);
+
+      fixture.detectChanges();
+
+      const modal = fixture.debugElement.query(By.css('ion-modal'));
+
+      expect(modal.componentInstance.isOpen).toBe(true);
     });
   });
 });
