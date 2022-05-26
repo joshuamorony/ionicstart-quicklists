@@ -57,6 +57,7 @@ describe('Home', () => {
   it('should be able to edit a checklist', () => {
     const testTitle = 'preflight';
     createChecklist(testTitle);
+    cy.wait(500);
     getEditChecklistButton().first().click({ force: true });
 
     const editedTitle = 'newtitle';
