@@ -1,8 +1,14 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ViewChild,
+} from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { AlertController, ModalController } from '@ionic/angular';
+import { AlertController } from '@ionic/angular';
+import { merge, Observable, Subject } from 'rxjs';
 import { ChecklistService } from '../shared/data-access/checklist.service';
-import { FormModalComponent } from '../shared/ui/form-modal/form-modal.component';
+import { ChecklistListComponent } from './ui/checklist-list/checklist-list.component';
 
 @Component({
   selector: 'app-home',
@@ -11,6 +17,10 @@ import { FormModalComponent } from '../shared/ui/form-modal/form-modal.component
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomePage {
+  // @ViewChild(ChecklistListComponent) checklistList!: ChecklistListComponent;
+  // checklistIdBeingEdited$: Observable<string | boolean> | undefined;
+  // currentlyEditing$ = new Subject<boolean>();
+
   checklists$ = this.checklistService.getChecklists();
 
   checklistForm = this.fb.group({
@@ -20,12 +30,22 @@ export class HomePage {
   constructor(
     private fb: FormBuilder,
     private checklistService: ChecklistService,
-    private alertCtrl: AlertController,
-    private modalCtrl: ModalController
+    private alertCtrl: AlertController
   ) {}
+
+  // ngAfterViewInit() {
+  //   this.checklistIdBeingEdited$ = merge(
+  //     this.checklistList.edit,
+  //     this.currentlyEditing$
+  //   );
+  // }
 
   addChecklist() {
     this.checklistService.add(this.checklistForm.value);
+  }
+
+  editChecklist(checklistId: string | boolean) {
+    // this.checklistService.update(checklistId, this.checklistForm.value);
   }
 
   async deleteChecklist(id: string) {
@@ -50,14 +70,5 @@ export class HomePage {
     });
 
     alert.present();
-  }
-
-  async editChecklist(id: string) {
-    const formModal = await this.modalCtrl.create({
-      component: FormModalComponent,
-      componentProps: {},
-    });
-
-    formModal.present();
   }
 }

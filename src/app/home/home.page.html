@@ -25,3 +25,18 @@
     ></app-form-modal>
   </ng-template>
 </ion-modal>
+
+<!-- <ion-modal
+  *ngIf="{checklistIdBeingEdited: checklistIdBeingEdited$ | async} as vm"
+  trigger="open-modal-trigger"
+  [isOpen]="vm.checklistIdBeingEdited ? true : false"
+  (ionModalDidDismiss)="currentlyEditing$.next(false);"
+>
+  <ng-template>
+    <app-form-modal
+      [title]="vm.checklistIdBeingEdited ? 'Edit checklist' : 'Create checklist'"
+      [formGroup]="checklistForm"
+      (save)="vm.checklistIdBeingEdited ? editChecklist(vm.checklistIdBeingEdited) : addChecklist()"
+    ></app-form-modal>
+  </ng-template>
+</ion-modal> -->
