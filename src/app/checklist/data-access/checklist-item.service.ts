@@ -53,6 +53,8 @@ export class ChecklistItemService {
     this.checklistItems$.next([...this.checklistItems$.value, newItem]);
   }
 
+  update(id: string, item: Pick<ChecklistItem, 'title'>) {}
+
   remove(id: string) {
     const modifiedItems = this.checklistItems$.value.filter(
       (item) => item.id !== id

@@ -19,7 +19,7 @@
       </ion-button>
       <ion-button
         data-test="add-checklist-item-button"
-        id="open-item-modal-trigger"
+        (click)="formModalIsOpen$.next(true)"
       >
         <ion-icon name="add" slot="icon-only"></ion-icon>
       </ion-button>
@@ -33,15 +33,20 @@
     [checklistItems]="vm.items"
     (toggle)="toggleChecklistItem($event)"
     (delete)="deleteChecklistItem($event)"
+    (edit)="openEditModal($event)"
   ></app-checklist-item-list>
 </ion-content>
 
-<ion-modal trigger="open-item-modal-trigger" *ngIf="vm$ | async as vm">
+<ion-modal
+  [isOpen]=""
+  (ionModalDidDismiss)="checklistItemIdBeingEdited$.next(null); formModalIsOpen$.next(false)"
+  *ngIf="vm$ | async as vm"
+>
   <ng-template>
     <app-form-modal
-      title="Add Item"
+      [title]="vm.checklistItemIdBeingEdited ? 'Edit item' : 'Create item'"
       [formGroup]="checklistItemForm"
-      (save)="addChecklistItem(vm.checklist.id)"
+      (save)="vm.checklistItemIdBeingEdited ? editChecklistItem(vm.checklistItemIdBeingEdited) : addChecklistItem(vm.checklist.id)"
     ></app-form-modal>
   </ng-template>
 </ion-modal>

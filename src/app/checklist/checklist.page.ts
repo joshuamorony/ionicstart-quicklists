@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { combineLatest } from 'rxjs';
+import { BehaviorSubject, combineLatest } from 'rxjs';
 import { catchError, filter, map, share, switchMap, tap } from 'rxjs/operators';
 import { ChecklistService } from '../shared/data-access/checklist.service';
 import { Checklist } from '../shared/interfaces/checklist';
+import { ChecklistItem } from '../shared/interfaces/checklist-item';
 import { ChecklistItemService } from './data-access/checklist-item.service';
 
 @Component({
@@ -14,6 +15,13 @@ import { ChecklistItemService } from './data-access/checklist-item.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChecklistPage {
+  formModalIsOpen$ = new BehaviorSubject<boolean>(false);
+  checklistItemIdBeingEdited$ = new BehaviorSubject<string | null>(null);
+
+  checklistItemForm = this.fb.group({
+    title: ['', Validators.required],
+  });
+
   vm$ = this.route.paramMap.pipe(
     switchMap((paramMap) =>
       combineLatest([
@@ -24,14 +32,17 @@ export class ChecklistPage {
         this.checklistItemService.getItemsByChecklistId(
           paramMap.get('id') as string
         ),
+        this.formModalIsOpen$,
+        this.checklistItemIdBeingEdited$,
       ])
     ),
-    map(([checklist, items]) => ({ checklist, items }))
+    map(([checklist, items, formModalIsOpen, checklistItemIdBeingEdited]) => ({
+      checklist,
+      items,
+      formModalIsOpen,
+      checklistItemIdBeingEdited,
+    }))
   );
-
-  checklistItemForm = this.fb.group({
-    title: ['', Validators.required],
-  });
 
   constructor(
     private route: ActivatedRoute,
@@ -42,6 +53,21 @@ export class ChecklistPage {
 
   addChecklistItem(checklistId: string) {
     this.checklistItemService.add(this.checklistItemForm.value, checklistId);
+  }
+
+  editChecklistItem(checklistItemId: string) {
+    this.checklistItemService.update(
+      checklistItemId,
+      this.checklistItemForm.value
+    );
+  }
+
+  openEditModal(checklistItem: ChecklistItem) {
+    this.checklistItemForm.patchValue({
+      title: checklistItem.title,
+    });
+    this.checklistItemIdBeingEdited$.next(checklistItem.id);
+    this.formModalIsOpen$.next(true);
   }
 
   toggleChecklistItem(itemId: string) {

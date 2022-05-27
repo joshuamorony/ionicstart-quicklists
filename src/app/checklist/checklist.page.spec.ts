@@ -58,6 +58,7 @@ describe('ChecklistPage', () => {
             remove: jest.fn(),
             toggle: jest.fn(),
             reset: jest.fn(),
+            update: jest.fn(),
             getItemsByChecklistId: jest.fn().mockReturnValue(of(testItems)),
           },
         },
@@ -86,6 +87,67 @@ describe('ChecklistPage', () => {
     expect(checklistItemService.toggle).toHaveBeenCalledWith(testItems[0].id);
   });
 
+  describe('checklistItemIdBeingEdited$', () => {
+    it('should be null initially', () => {
+      const observerSpy = subscribeSpyTo(component.checklistItemIdBeingEdited$);
+      expect(observerSpy.getLastValue()).toBe(null);
+    });
+
+    it('should emit checklist item id when edit is triggered', () => {
+      const observerSpy = subscribeSpyTo(component.checklistItemIdBeingEdited$);
+
+      const checklistItemList = fixture.debugElement.query(
+        By.css('app-checklist-item-list')
+      );
+
+      checklistItemList.triggerEventHandler('edit', testItems[0]);
+
+      expect(observerSpy.getLastValue()).toEqual(testItems[0].id);
+    });
+
+    it('should emit null when the modal is dismissed', () => {
+      const modal = fixture.debugElement.query(By.css('ion-modal'));
+      const observerSpy = subscribeSpyTo(component.checklistItemIdBeingEdited$);
+
+      component.checklistItemIdBeingEdited$.next('1');
+
+      modal.triggerEventHandler('ionModalDidDismiss', null);
+
+      expect(observerSpy.getLastValue()).toBe(null);
+    });
+  });
+
+  describe('formModalIsOpen$', () => {
+    it('should emit true when add button is clicked', () => {
+      const observerSpy = subscribeSpyTo(component.formModalIsOpen$);
+
+      const addButton = fixture.debugElement.query(
+        By.css('[data-test="add-checklist-item-button"]')
+      );
+
+      addButton.nativeElement.click();
+
+      expect(observerSpy.getLastValue()).toBe(true);
+    });
+
+    it('should emit true when edit is triggered', () => {
+      const observerSpy = subscribeSpyTo(component.formModalIsOpen$);
+
+      component.openEditModal({} as any);
+
+      expect(observerSpy.getLastValue()).toBe(true);
+    });
+
+    it('should emit false when the modal is dismissed', () => {
+      const observerSpy = subscribeSpyTo(component.formModalIsOpen$);
+      component.formModalIsOpen$.next(true);
+
+      const modal = fixture.debugElement.query(By.css('ion-modal'));
+      modal.triggerEventHandler('ionModalDidDismiss', null);
+      expect(observerSpy.getLastValue()).toBe(false);
+    });
+  });
+
   describe('vm$', () => {
     it('should combine the stream returned from getChecklistById for the id passed in through the route along with its items', () => {
       const checklistService =
@@ -112,7 +174,7 @@ describe('ChecklistPage', () => {
         testChecklist.id
       );
 
-      expect(observerSpy.getLastValue()).toEqual({
+      expect(observerSpy.getLastValue()).toMatchObject({
         checklist: testChecklist,
         items: testItems,
       });
@@ -163,6 +225,33 @@ describe('ChecklistPage', () => {
       component.deleteChecklistItem(testId);
 
       expect(checklistItemService.remove).toHaveBeenCalledWith(testId);
+    });
+  });
+
+  describe('editChecklistItem()', () => {
+    it('should pass the checklist item id being edited and form data to the update method of the checklist item service', () => {
+      const checklistItemService =
+        fixture.debugElement.injector.get(ChecklistItemService);
+
+      const testChecklistItemId = '1';
+      component.editChecklistItem(testChecklistItemId);
+
+      expect(checklistItemService.update).toHaveBeenCalledWith(
+        testChecklistItemId,
+        component.checklistItemForm.value
+      );
+    });
+
+    it('should set the existing title for the checklist being edited in the form modal', () => {
+      const checklistItemList = fixture.debugElement.query(
+        By.css('app-checklist-item-list')
+      );
+
+      checklistItemList.triggerEventHandler('edit', testItems[0]);
+
+      expect(component.checklistItemForm.value.title).toEqual(
+        testItems[0].title
+      );
     });
   });
 });
