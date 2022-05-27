@@ -11,13 +11,13 @@
 
     <ion-item-options side="end">
       <ion-item-option
-        (click)="delete.emit(checklist.id)"
+        (click)="delete.emit(checklist.id); closeItems()"
         data-test="delete-checklist"
       >
         <ion-icon name="trash" slot="icon-only"></ion-icon>
       </ion-item-option>
       <ion-item-option
-        (click)="edit.emit(checklist)"
+        (click)="edit.emit(checklist); closeItems()"
         data-test="edit-checklist"
       >
         <ion-icon name="pencil-outline" slot="icon-only"></ion-icon>

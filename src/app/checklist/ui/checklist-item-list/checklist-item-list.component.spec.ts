@@ -8,7 +8,7 @@ import {
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { subscribeSpyTo } from '@hirez_io/observer-spy';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, IonList } from '@ionic/angular';
 import { ChecklistItem } from 'src/app/shared/interfaces/checklist-item';
 
 import { ChecklistItemListComponent } from './checklist-item-list.component';
@@ -44,10 +44,27 @@ describe('ChecklistItemListComponent', () => {
     component.checklistItems = testData;
 
     fixture.detectChanges();
+    jest.spyOn(component.itemList, 'closeSlidingItems').mockResolvedValue(true);
   }));
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should close open sliding items when edit is triggered', () => {
+    const editButton = fixture.debugElement.query(
+      By.css('[data-test="edit-checklist-item"]')
+    );
+    editButton.nativeElement.click();
+    expect(component.itemList.closeSlidingItems).toHaveBeenCalled();
+  });
+
+  it('should close open sliding items when delete is triggered', () => {
+    const deleteButton = fixture.debugElement.query(
+      By.css('[data-test="delete-checklist-item"]')
+    );
+    deleteButton.nativeElement.click();
+    expect(component.itemList.closeSlidingItems).toHaveBeenCalled();
   });
 
   describe('@Input() checklist', () => {
@@ -55,7 +72,6 @@ describe('ChecklistItemListComponent', () => {
       const listItems = fixture.debugElement.queryAll(
         By.css('[data-test="checklist-list-item"]')
       );
-
       expect(listItems.length).toEqual(testData.length);
     });
   });

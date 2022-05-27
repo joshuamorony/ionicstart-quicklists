@@ -41,10 +41,39 @@ describe('ChecklistListComponent', () => {
     fixture = TestBed.createComponent(ChecklistListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    jest
+      .spyOn(component.checklistList, 'closeSlidingItems')
+      .mockResolvedValue(true);
   }));
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should close open sliding items when edit is triggered', () => {
+    const testData = [{}, {}, {}] as any;
+    component.checklists = testData;
+
+    fixture.detectChanges();
+
+    const editButton = fixture.debugElement.query(
+      By.css('[data-test="edit-checklist"]')
+    );
+    editButton.nativeElement.click();
+    expect(component.checklistList.closeSlidingItems).toHaveBeenCalled();
+  });
+
+  it('should close open sliding items when delete is triggered', () => {
+    const testData = [{}, {}, {}] as any;
+    component.checklists = testData;
+
+    fixture.detectChanges();
+
+    const deleteButton = fixture.debugElement.query(
+      By.css('[data-test="delete-checklist"]')
+    );
+    deleteButton.nativeElement.click();
+    expect(component.checklistList.closeSlidingItems).toHaveBeenCalled();
   });
 
   describe('@Input() checklists', () => {

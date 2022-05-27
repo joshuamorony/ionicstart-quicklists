@@ -15,13 +15,13 @@
     <ion-item-options>
       <ion-item-option
         data-test="delete-checklist-item"
-        (click)="delete.emit(item.id)"
+        (click)="delete.emit(item.id); closeItems()"
       >
         <ion-icon name="trash" slot="icon-only"></ion-icon>
       </ion-item-option>
       <ion-item-option
         data-test="edit-checklist-item"
-        (click)="edit.emit(item)"
+        (click)="edit.emit(item); closeItems()"
       >
         <ion-icon name="pencil-outline" slot="icon-only"></ion-icon>
       </ion-item-option>

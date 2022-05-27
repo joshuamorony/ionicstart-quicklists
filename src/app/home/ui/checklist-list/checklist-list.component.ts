@@ -4,7 +4,9 @@ import {
   EventEmitter,
   Input,
   Output,
+  ViewChild,
 } from '@angular/core';
+import { IonList } from '@ionic/angular';
 import { Checklist } from 'src/app/shared/interfaces/checklist';
 
 @Component({
@@ -18,7 +20,13 @@ export class ChecklistListComponent {
   @Output() delete = new EventEmitter<string>();
   @Output() edit = new EventEmitter<Checklist>();
 
+  @ViewChild(IonList) checklistList!: IonList;
+
   constructor() {}
+
+  async closeItems() {
+    await this.checklistList.closeSlidingItems();
+  }
 
   trackByFn(index: number, checklist: Checklist) {
     return checklist.id;
