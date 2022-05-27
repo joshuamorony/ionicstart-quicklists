@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { subscribeSpyTo } from '@hirez_io/observer-spy';
 import { AlertController, IonicModule, ModalController } from '@ionic/angular';
 import { of } from 'rxjs';
 import { ChecklistService } from '../shared/data-access/checklist.service';
@@ -59,6 +60,69 @@ describe('HomePage', () => {
       titleControl.setValue('');
 
       expect(titleControl.valid).toBe(false);
+    });
+  });
+
+  describe('checklistIdBeingEdited$', () => {
+    it('should be null initially', () => {
+      const observerSpy = subscribeSpyTo(component.checklistIdBeingEdited$);
+      expect(observerSpy.getLastValue()).toBe(null);
+    });
+
+    it('should emit checklist id when edit is triggered', () => {
+      const observerSpy = subscribeSpyTo(component.checklistIdBeingEdited$);
+
+      const checklistItemList = fixture.debugElement.query(
+        By.css('app-checklist-list')
+      );
+
+      const testChecklist = { id: '1' };
+
+      checklistItemList.triggerEventHandler('edit', testChecklist);
+
+      expect(observerSpy.getLastValue()).toEqual(testChecklist.id);
+    });
+
+    it('should emit null when the modal is dismissed', () => {
+      const modal = fixture.debugElement.query(By.css('ion-modal'));
+      const observerSpy = subscribeSpyTo(component.checklistIdBeingEdited$);
+
+      component.checklistIdBeingEdited$.next('1');
+
+      modal.triggerEventHandler('ionModalDidDismiss', null);
+
+      expect(observerSpy.getLastValue()).toBe(null);
+    });
+  });
+
+  describe('formModalIsOpen$', () => {
+    it('should emit true when add button is clicked', () => {
+      const observerSpy = subscribeSpyTo(component.formModalIsOpen$);
+
+      const addButton = fixture.debugElement.query(
+        By.css('[data-test="add-checklist-button"]')
+      );
+
+      addButton.nativeElement.click();
+
+      expect(observerSpy.getLastValue()).toBe(true);
+    });
+
+    it('should emit true when edit is triggered', () => {
+      const observerSpy = subscribeSpyTo(component.formModalIsOpen$);
+
+      component.openEditModal({} as any);
+
+      expect(observerSpy.getLastValue()).toBe(true);
+    });
+
+    it('should emit false when the modal is dismissed', () => {
+      const observerSpy = subscribeSpyTo(component.formModalIsOpen$);
+      component.formModalIsOpen$.next(true);
+
+      const modal = fixture.debugElement.query(By.css('ion-modal'));
+      modal.triggerEventHandler('ionModalDidDismiss', null);
+      expect(observerSpy.getLastValue()).toBe(false);
     });
   });
 
