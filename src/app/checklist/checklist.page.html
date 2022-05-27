@@ -38,7 +38,7 @@
 </ion-content>
 
 <ion-modal
-  [isOpen]=""
+  [isOpen]="vm.formModalIsOpen"
   (ionModalDidDismiss)="checklistItemIdBeingEdited$.next(null); formModalIsOpen$.next(false)"
   *ngIf="vm$ | async as vm"
 >

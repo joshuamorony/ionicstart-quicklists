@@ -13,11 +13,13 @@ describe('ChecklistItemService', () => {
 
   const testChecklistId = '1';
   const testItem = {
+    id: '1',
     title: 'hello',
   };
 
   const testChecklistIdTwo = '2';
   const testItemTwo = {
+    id: '2',
     title: 'goodbye',
   };
 
@@ -171,6 +173,40 @@ describe('ChecklistItemService', () => {
       expect(
         observerSpy.getLastValue()?.find((item) => item.id === itemToRemove.id)
       ).toBe(undefined);
+    });
+  });
+
+  describe('update()', () => {
+    const formData = { title: 'new title' };
+
+    it('should update the title to the new value supplied for the checklist item id supplied', () => {
+      service.add(testItem, testChecklistId);
+
+      service.update(testItem.id, formData);
+
+      const observerSpy = subscribeSpyTo(
+        service.getItemsByChecklistId(testChecklistId)
+      );
+
+      expect(
+        observerSpy.getLastValue()?.find((item) => item.id === testItem.id)
+          ?.title
+      ).toEqual(formData.title);
+    });
+
+    it('should not update a checklist that does not match the id supplied', () => {
+      service.add(testItem, testChecklistId);
+
+      service.update(testItem.id, formData);
+
+      const observerSpy = subscribeSpyTo(
+        service.getItemsByChecklistId(testChecklistIdTwo)
+      );
+
+      expect(
+        observerSpy.getLastValue()?.find((item) => item.id === testItem.id)
+          ?.title
+      ).not.toEqual(formData.title);
     });
   });
 });
