@@ -1,6 +1,8 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>Home</ion-title>
+  <ion-toolbar color="success">
+    <ion-title>
+      <img src="assets/logo.svg" />
+    </ion-title>
     <ion-buttons slot="end">
       <ion-button
         data-test="add-checklist-button"
@@ -12,7 +14,13 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title color="light" size="large">Your lists</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
   <app-checklist-list
     [checklists]="checklists$ | async"
     (delete)="deleteChecklist($event)"

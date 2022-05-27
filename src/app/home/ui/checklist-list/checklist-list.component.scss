@@ -1,0 +1,25 @@
+ion-item-sliding {
+  background-color: var(--ion-color-light);
+  border-radius: 5px;
+  margin: 10px 0 10px 10px;
+  box-shadow: -2px 4px 4px 0px rgba(235, 68, 90, 0.1);
+  overflow: visible;
+}
+
+ion-item-options {
+  padding-right: 5px;
+}
+
+ion-label {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: var(--ion-color-dark);
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+ion-item {
+  border-radius: 5px;
+  border-left: 4px solid var(--ion-color-tertiary);
+  padding-right: 5px;
+}

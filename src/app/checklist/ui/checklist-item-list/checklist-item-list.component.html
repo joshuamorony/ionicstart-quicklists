@@ -1,11 +1,16 @@
-<ion-list>
+<ion-list lines="none">
   <ion-item-sliding
     side="end"
     *ngFor="let item of checklistItems; trackBy: trackByFn"
   >
-    <ion-item data-test="checklist-list-item" (click)="toggleItem(item.id)">
+    <ion-item
+      data-test="checklist-list-item"
+      (click)="toggleItem(item.id)"
+      color="success"
+    >
       <ion-label>{{ item.title }}</ion-label>
       <ion-checkbox
+        color="light"
         data-test="checklist-item-checkbox"
         slot="end"
         [checked]="item.checked"
@@ -14,16 +19,18 @@
 
     <ion-item-options>
       <ion-item-option
+        data-test="edit-checklist-item"
+        color="light"
+        (click)="edit.emit(item); closeItems()"
+      >
+        <ion-icon name="pencil-outline" slot="icon-only"></ion-icon>
+      </ion-item-option>
+      <ion-item-option
+        color="danger"
         data-test="delete-checklist-item"
         (click)="delete.emit(item.id); closeItems()"
       >
         <ion-icon name="trash" slot="icon-only"></ion-icon>
-      </ion-item-option>
-      <ion-item-option
-        data-test="edit-checklist-item"
-        (click)="edit.emit(item); closeItems()"
-      >
-        <ion-icon name="pencil-outline" slot="icon-only"></ion-icon>
       </ion-item-option>
     </ion-item-options>
   </ion-item-sliding>
