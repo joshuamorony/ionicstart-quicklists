@@ -29,6 +29,10 @@
   --ion-card-color: var(--ion-color-dark);
 }
 
+ion-app {
+  background: var(--ion-color-dark);
+}
+
 ion-title img {
   max-height: 30px;
   width: auto;

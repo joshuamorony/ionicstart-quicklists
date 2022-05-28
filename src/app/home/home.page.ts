@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { AlertController } from '@ionic/angular';
+import { AlertController, IonRouterOutlet } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
 import { ChecklistService } from '../shared/data-access/checklist.service';
 import { Checklist } from '../shared/interfaces/checklist';
@@ -24,7 +24,8 @@ export class HomePage {
   constructor(
     private fb: FormBuilder,
     private checklistService: ChecklistService,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    public routerOutlet: IonRouterOutlet
   ) {}
 
   addChecklist() {

@@ -40,6 +40,8 @@
 
 <ion-modal
   [isOpen]="vm.formModalIsOpen"
+  [presentingElement]="routerOutlet.nativeEl"
+  [canDismiss]="true"
   (ionModalDidDismiss)="checklistItemIdBeingEdited$.next(null); formModalIsOpen$.next(false)"
   *ngIf="vm$ | async as vm"
 >

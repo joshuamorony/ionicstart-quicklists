@@ -12,7 +12,7 @@
 <ion-content>
   <form [formGroup]="formGroup" (ngSubmit)="handleSave()">
     <ion-item *ngFor="let control of formGroup.controls | keyvalue">
-      <ion-label>{{ control.key }}</ion-label>
+      <ion-label position="stacked">{{ control.key }}</ion-label>
       <ion-input
         type="text"
         [attr.data-test]="control.key"
@@ -21,7 +21,7 @@
     </ion-item>
     <ion-button
       data-test="form-modal-save"
-      expand="full"
+      color="dark"
       type="submit"
       [disabled]="!formGroup.valid"
     >

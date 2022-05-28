@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { IonRouterOutlet } from '@ionic/angular';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { catchError, filter, map, share, switchMap, tap } from 'rxjs/operators';
 import { ChecklistService } from '../shared/data-access/checklist.service';
@@ -48,7 +49,8 @@ export class ChecklistPage {
     private route: ActivatedRoute,
     private checklistService: ChecklistService,
     private checklistItemService: ChecklistItemService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    public routerOutlet: IonRouterOutlet
   ) {}
 
   addChecklistItem(checklistId: string) {
