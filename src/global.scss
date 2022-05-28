@@ -25,6 +25,10 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 
+:root {
+  --ion-card-color: var(--ion-color-dark);
+}
+
 ion-title img {
   max-height: 30px;
   width: auto;

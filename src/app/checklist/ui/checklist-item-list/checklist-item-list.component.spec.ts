@@ -74,6 +74,19 @@ describe('ChecklistItemListComponent', () => {
       );
       expect(listItems.length).toEqual(testData.length);
     });
+
+    it('should render a message only if no items are defined', () => {
+      expect(
+        fixture.debugElement.query(By.css('[data-test="no-items-message"]'))
+      ).toBeFalsy();
+
+      component.checklistItems = [];
+      fixture.detectChanges();
+
+      expect(
+        fixture.debugElement.query(By.css('[data-test="no-items-message"]'))
+      ).toBeTruthy();
+    });
   });
 
   describe('@Output toggle', () => {

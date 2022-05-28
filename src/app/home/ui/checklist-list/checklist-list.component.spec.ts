@@ -89,6 +89,30 @@ describe('ChecklistListComponent', () => {
 
       expect(listItems.length).toEqual(testData.length);
     });
+
+    it('should render a message only when checklists input is empty', () => {
+      const testData = [{}, {}, {}] as any;
+      component.checklists = testData;
+
+      fixture.detectChanges();
+
+      expect(
+        fixture.debugElement.query(
+          By.css('[data-test="no-checklists-message"]')
+        )
+      ).toBeFalsy();
+
+      const testEmptyData = [] as any;
+      component.checklists = testEmptyData;
+
+      fixture.detectChanges();
+
+      expect(
+        fixture.debugElement.query(
+          By.css('[data-test="no-checklists-message"]')
+        )
+      ).toBeTruthy();
+    });
   });
 
   describe('@Output delete', () => {
