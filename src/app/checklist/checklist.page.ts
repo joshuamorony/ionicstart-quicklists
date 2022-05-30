@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { IonRouterOutlet } from '@ionic/angular';
+import { IonContent, IonRouterOutlet } from '@ionic/angular';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { catchError, filter, map, share, switchMap, tap } from 'rxjs/operators';
 import { ChecklistService } from '../shared/data-access/checklist.service';
@@ -16,6 +16,8 @@ import { ChecklistItemService } from './data-access/checklist-item.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChecklistPage {
+  @ViewChild(IonContent) ionContent!: IonContent;
+
   formModalIsOpen$ = new BehaviorSubject<boolean>(false);
   checklistItemIdBeingEdited$ = new BehaviorSubject<string | null>(null);
 
@@ -30,9 +32,11 @@ export class ChecklistPage {
           .getChecklistById(paramMap.get('id') as string)
           // just to please the TypeScript compiler for potentially undefined values
           .pipe(map((checklist) => checklist as Checklist)),
-        this.checklistItemService.getItemsByChecklistId(
-          paramMap.get('id') as string
-        ),
+        this.checklistItemService
+          .getItemsByChecklistId(paramMap.get('id') as string)
+          .pipe(
+            tap(() => setTimeout(() => this.ionContent?.scrollToBottom(200), 0))
+          ),
         this.formModalIsOpen$,
         this.checklistItemIdBeingEdited$,
       ])

@@ -1,4 +1,10 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  fakeAsync,
+  TestBed,
+  tick,
+  waitForAsync,
+} from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { subscribeSpyTo } from '@hirez_io/observer-spy';
@@ -8,26 +14,33 @@ import {
   IonRouterOutlet,
   ModalController,
 } from '@ionic/angular';
-import { of } from 'rxjs';
+import { of, Subject } from 'rxjs';
 import { ChecklistService } from '../shared/data-access/checklist.service';
 
 import { HomePage } from './home.page';
 import { MockChecklistComponent } from './ui/checklist-list/checklist-list.component.spec';
-
-jest.mock('../shared/data-access/checklist.service');
 
 describe('HomePage', () => {
   let component: HomePage;
   let fixture: ComponentFixture<HomePage>;
 
   const presentMock = jest.fn();
+  const mockChecklistData = new Subject();
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [HomePage, MockChecklistComponent],
       imports: [IonicModule.forRoot(), ReactiveFormsModule],
       providers: [
-        ChecklistService,
+        {
+          provide: ChecklistService,
+          useValue: {
+            getChecklists: jest.fn().mockReturnValue(mockChecklistData),
+            update: jest.fn(),
+            remove: jest.fn(),
+            add: jest.fn(),
+          },
+        },
         {
           provide: AlertController,
           useValue: {
@@ -56,6 +69,7 @@ describe('HomePage', () => {
     fixture.detectChanges();
 
     jest.clearAllMocks();
+    jest.spyOn(component.ionContent, 'scrollToBottom').mockResolvedValue();
   }));
 
   it('should create', () => {
@@ -70,6 +84,14 @@ describe('HomePage', () => {
 
       expect(titleControl.valid).toBe(false);
     });
+  });
+
+  describe('checklists$', () => {
+    it('should scroll to bottom when checklist data changes', fakeAsync(() => {
+      mockChecklistData.next([{}, {}]);
+      tick();
+      expect(component.ionContent.scrollToBottom).toHaveBeenCalled();
+    }));
   });
 
   describe('checklistIdBeingEdited$', () => {

@@ -1,11 +1,17 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  fakeAsync,
+  TestBed,
+  tick,
+  waitForAsync,
+} from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { subscribeSpyTo } from '@hirez_io/observer-spy';
 import { IonicModule, IonRouterOutlet } from '@ionic/angular';
-import { of } from 'rxjs';
+import { BehaviorSubject, of, Subject } from 'rxjs';
 import { ChecklistService } from '../shared/data-access/checklist.service';
 
 import { ChecklistPage } from './checklist.page';
@@ -29,6 +35,8 @@ describe('ChecklistPage', () => {
       title: 'there',
     },
   ];
+
+  const mockChecklistItemData = new BehaviorSubject(testItems);
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
@@ -59,7 +67,9 @@ describe('ChecklistPage', () => {
             toggle: jest.fn(),
             reset: jest.fn(),
             update: jest.fn(),
-            getItemsByChecklistId: jest.fn().mockReturnValue(of(testItems)),
+            getItemsByChecklistId: jest
+              .fn()
+              .mockReturnValue(mockChecklistItemData),
           },
         },
         FormBuilder,
@@ -73,6 +83,8 @@ describe('ChecklistPage', () => {
     fixture = TestBed.createComponent(ChecklistPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
+
+    jest.spyOn(component.ionContent, 'scrollToBottom').mockResolvedValue();
   }));
 
   it('should create', () => {
@@ -90,6 +102,12 @@ describe('ChecklistPage', () => {
 
     expect(checklistItemService.toggle).toHaveBeenCalledWith(testItems[0].id);
   });
+
+  it('should scroll to bottom when data from getItemsByChecklistId changes', fakeAsync(() => {
+    mockChecklistItemData.next([{}, {}] as any);
+    tick();
+    expect(component.ionContent.scrollToBottom).toHaveBeenCalled();
+  }));
 
   describe('checklistItemIdBeingEdited$', () => {
     it('should be null initially', () => {

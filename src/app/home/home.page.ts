@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { AlertController, IonRouterOutlet } from '@ionic/angular';
+import { AlertController, IonContent, IonRouterOutlet } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { ChecklistService } from '../shared/data-access/checklist.service';
 import { Checklist } from '../shared/interfaces/checklist';
 
@@ -12,10 +13,18 @@ import { Checklist } from '../shared/interfaces/checklist';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomePage {
+  @ViewChild(IonContent) ionContent!: IonContent;
+
   formModalIsOpen$ = new BehaviorSubject<boolean>(false);
   checklistIdBeingEdited$ = new BehaviorSubject<string | null>(null);
 
-  checklists$ = this.checklistService.getChecklists();
+  checklists$ = this.checklistService.getChecklists().pipe(
+    tap(() => {
+      setTimeout(() => {
+        this.ionContent?.scrollToBottom(200);
+      }, 0);
+    })
+  );
 
   checklistForm = this.fb.group({
     title: ['', Validators.required],
