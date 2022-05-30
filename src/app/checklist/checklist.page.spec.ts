@@ -4,7 +4,7 @@ import { By } from '@angular/platform-browser';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { subscribeSpyTo } from '@hirez_io/observer-spy';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, IonRouterOutlet } from '@ionic/angular';
 import { of } from 'rxjs';
 import { ChecklistService } from '../shared/data-access/checklist.service';
 
@@ -63,6 +63,10 @@ describe('ChecklistPage', () => {
           },
         },
         FormBuilder,
+        {
+          provide: IonRouterOutlet,
+          useValue: {},
+        },
       ],
     }).compileComponents();
 

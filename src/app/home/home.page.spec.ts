@@ -2,7 +2,12 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { subscribeSpyTo } from '@hirez_io/observer-spy';
-import { AlertController, IonicModule, ModalController } from '@ionic/angular';
+import {
+  AlertController,
+  IonicModule,
+  IonRouterOutlet,
+  ModalController,
+} from '@ionic/angular';
 import { of } from 'rxjs';
 import { ChecklistService } from '../shared/data-access/checklist.service';
 
@@ -38,6 +43,10 @@ describe('HomePage', () => {
               present: presentMock,
             }),
           },
+        },
+        {
+          provide: IonRouterOutlet,
+          useValue: {},
         },
       ],
     }).compileComponents();
