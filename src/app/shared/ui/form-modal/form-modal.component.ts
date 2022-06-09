@@ -24,11 +24,16 @@ export class FormModalComponent {
 
   handleSave() {
     this.save.emit(true);
-    this.dismiss();
+    this.dismiss({
+      didSave: true,
+    });
   }
 
-  dismiss() {
-    this.formGroup.reset();
-    this.modalCtrl.dismiss();
+  dismiss(data?: any) {
+    if (data) {
+      this.modalCtrl.dismiss(data);
+    } else {
+      this.modalCtrl.dismiss();
+    }
   }
 }

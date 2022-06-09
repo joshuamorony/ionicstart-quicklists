@@ -1,10 +1,16 @@
 import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { AlertController, IonContent, IonRouterOutlet } from '@ionic/angular';
+import {
+  AlertController,
+  IonContent,
+  IonRouterOutlet,
+  ModalController,
+} from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { ChecklistService } from '../shared/data-access/checklist.service';
 import { Checklist } from '../shared/interfaces/checklist';
+import { FormModalComponent } from '../shared/ui/form-modal/form-modal.component';
 
 @Component({
   selector: 'app-home',
@@ -34,6 +40,7 @@ export class HomePage {
     private fb: FormBuilder,
     private checklistService: ChecklistService,
     private alertCtrl: AlertController,
+    private modalCtrl: ModalController,
     public routerOutlet: IonRouterOutlet
   ) {}
 
@@ -41,12 +48,45 @@ export class HomePage {
     this.checklistService.add(this.checklistForm.value);
   }
 
-  openEditModal(checklist: Checklist) {
+  async openModal() {
+    const modal = await this.modalCtrl.create({
+      component: FormModalComponent,
+      componentProps: {
+        title: 'Create checklist',
+        formGroup: this.checklistForm,
+      },
+    });
+
+    await modal.present();
+
+    const { data } = await modal.onDidDismiss();
+
+    if (data) {
+      this.addChecklist();
+      this.checklistForm.reset();
+    }
+  }
+
+  async openEditModal(checklist: Checklist) {
     this.checklistForm.patchValue({
       title: checklist.title,
     });
-    this.checklistIdBeingEdited$.next(checklist.id);
-    this.formModalIsOpen$.next(true);
+
+    const modal = await this.modalCtrl.create({
+      component: FormModalComponent,
+      componentProps: {
+        title: 'Edit checklist',
+        formGroup: this.checklistForm,
+      },
+    });
+
+    await modal.present();
+
+    const { data } = await modal.onDidDismiss();
+
+    if (data) {
+      this.editChecklist(checklist.id);
+    }
   }
 
   editChecklist(checklistId: string) {
