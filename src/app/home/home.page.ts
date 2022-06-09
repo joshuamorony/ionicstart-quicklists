@@ -49,14 +49,7 @@ export class HomePage {
   }
 
   async openModal() {
-    const modal = await this.modalCtrl.create({
-      component: FormModalComponent,
-      componentProps: {
-        title: 'Create checklist',
-        formGroup: this.checklistForm,
-      },
-    });
-
+    const modal = await this.createModal('Create checklist');
     await modal.present();
 
     const { data } = await modal.onDidDismiss();
@@ -72,13 +65,7 @@ export class HomePage {
       title: checklist.title,
     });
 
-    const modal = await this.modalCtrl.create({
-      component: FormModalComponent,
-      componentProps: {
-        title: 'Edit checklist',
-        formGroup: this.checklistForm,
-      },
-    });
+    const modal = await this.createModal('Edit checklist');
 
     await modal.present();
 
@@ -87,6 +74,20 @@ export class HomePage {
     if (data) {
       this.editChecklist(checklist.id);
     }
+  }
+
+  async createModal(title: string) {
+    const modal = await this.modalCtrl.create({
+      component: FormModalComponent,
+      presentingElement: this.routerOutlet.nativeEl,
+      canDismiss: true,
+      componentProps: {
+        title,
+        formGroup: this.checklistForm,
+      },
+    });
+
+    return modal;
   }
 
   editChecklist(checklistId: string) {
