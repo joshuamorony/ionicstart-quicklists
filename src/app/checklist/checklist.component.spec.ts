@@ -14,13 +14,13 @@ import { IonicModule, IonRouterOutlet } from '@ionic/angular';
 import { BehaviorSubject, of, Subject } from 'rxjs';
 import { ChecklistService } from '../shared/data-access/checklist.service';
 
-import { ChecklistPage } from './checklist.page';
+import { ChecklistComponent } from './checklist.component';
 import { ChecklistItemService } from './data-access/checklist-item.service';
 import { MockChecklistItemListComponent } from './ui/checklist-item-list/checklist-item-list.component.spec';
 
-describe('ChecklistPage', () => {
-  let component: ChecklistPage;
-  let fixture: ComponentFixture<ChecklistPage>;
+describe('ChecklistComponent', () => {
+  let component: ChecklistComponent;
+  let fixture: ComponentFixture<ChecklistComponent>;
 
   const testChecklist = {
     id: 'hello',
@@ -40,7 +40,7 @@ describe('ChecklistPage', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ChecklistPage, MockChecklistItemListComponent],
+      declarations: [ChecklistComponent, MockChecklistItemListComponent],
       imports: [IonicModule.forRoot(), RouterTestingModule],
       providers: [
         {
@@ -80,7 +80,7 @@ describe('ChecklistPage', () => {
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ChecklistPage);
+    fixture = TestBed.createComponent(ChecklistComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
 
