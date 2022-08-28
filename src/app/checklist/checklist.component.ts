@@ -15,40 +15,18 @@ import { Checklist } from '../shared/interfaces/checklist';
 import { ChecklistItem } from '../shared/interfaces/checklist-item';
 import { FormModalComponentModule } from '../shared/ui/form-modal/form-modal.module';
 import { ChecklistItemService } from './data-access/checklist-item.service';
+import { ChecklistItemHeaderModule } from './ui/checklist-item-header/checklist-item-header.component';
 import { ChecklistItemListComponentModule } from './ui/checklist-item-list/checklist-item-list.component';
 
 @Component({
   selector: 'app-checklist',
   template: `
     <ng-container *ngIf="vm$ | async as vm">
-      <ion-header class="ion-no-border">
-        <ion-toolbar color="success">
-          <ion-buttons slot="start">
-            <ion-back-button
-              color="light"
-              data-test="checklist-back-button"
-              defaultHref="/"
-            ></ion-back-button>
-          </ion-buttons>
-          <ion-title data-test="checklist-detail-title">
-            {{ vm.checklist.title }}
-          </ion-title>
-          <ion-buttons slot="end">
-            <ion-button
-              data-test="reset-items"
-              (click)="resetChecklistItems(vm.checklist.id)"
-            >
-              <ion-icon name="refresh" slot="icon-only"></ion-icon>
-            </ion-button>
-            <ion-button
-              data-test="add-checklist-item-button"
-              (click)="formModalIsOpen$.next(true)"
-            >
-              <ion-icon name="add" slot="icon-only"></ion-icon>
-            </ion-button>
-          </ion-buttons>
-        </ion-toolbar>
-      </ion-header>
+      <app-checklist-item-header
+        [checklist]="vm.checklist"
+        (addItem)="formModalIsOpen$.next(true)"
+        (resetChecklist)="resetChecklistItems($event)"
+      ></app-checklist-item-header>
 
       <ion-content>
         <app-checklist-item-list
@@ -83,13 +61,6 @@ import { ChecklistItemListComponentModule } from './ui/checklist-item-list/check
       </ion-modal>
     </ng-container>
   `,
-  styles: [
-    `
-      ion-header {
-        background-color: var(--ion-color-primary);
-      }
-    `,
-  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChecklistComponent {
@@ -183,6 +154,7 @@ export class ChecklistComponent {
     ]),
     FormModalComponentModule,
     ChecklistItemListComponentModule,
+    ChecklistItemHeaderModule,
   ],
   declarations: [ChecklistComponent],
 })

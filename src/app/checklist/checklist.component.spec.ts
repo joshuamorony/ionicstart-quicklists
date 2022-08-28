@@ -16,6 +16,7 @@ import { ChecklistService } from '../shared/data-access/checklist.service';
 
 import { ChecklistComponent } from './checklist.component';
 import { ChecklistItemService } from './data-access/checklist-item.service';
+import { MockChecklistItemHeaderComponent } from './ui/checklist-item-header/checklist-item-header.component.spec';
 import { MockChecklistItemListComponent } from './ui/checklist-item-list/checklist-item-list.component.spec';
 
 describe('ChecklistComponent', () => {
@@ -40,7 +41,11 @@ describe('ChecklistComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ChecklistComponent, MockChecklistItemListComponent],
+      declarations: [
+        ChecklistComponent,
+        MockChecklistItemListComponent,
+        MockChecklistItemHeaderComponent,
+      ],
       imports: [IonicModule.forRoot(), RouterTestingModule],
       providers: [
         {
@@ -140,14 +145,14 @@ describe('ChecklistComponent', () => {
   });
 
   describe('formModalIsOpen$', () => {
-    it('should emit true when add button is clicked', () => {
+    it('should emit true when addItem event from checklist-item-header emits', () => {
       const observerSpy = subscribeSpyTo(component.formModalIsOpen$);
 
-      const addButton = fixture.debugElement.query(
-        By.css('[data-test="add-checklist-item-button"]')
+      const checklistItemHeader = fixture.debugElement.query(
+        By.css('app-checklist-item-header')
       );
 
-      addButton.nativeElement.click();
+      checklistItemHeader.triggerEventHandler('addItem', null);
 
       expect(observerSpy.getLastValue()).toBe(true);
     });
@@ -232,7 +237,14 @@ describe('ChecklistComponent', () => {
       const checklistItemService =
         fixture.debugElement.injector.get(ChecklistItemService);
 
-      component.resetChecklistItems(testChecklist.id);
+      const checklistItemHeader = fixture.debugElement.query(
+        By.css('app-checklist-item-header')
+      );
+
+      checklistItemHeader.triggerEventHandler(
+        'resetChecklist',
+        testChecklist.id
+      );
 
       expect(checklistItemService.reset).toHaveBeenCalledWith(testChecklist.id);
     });
