@@ -1,4 +1,5 @@
-import { TestBed } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { subscribeSpyTo } from '@hirez_io/observer-spy';
 import { Storage } from '@ionic/storage-angular';
 
 import { StorageService } from './storage.service';
@@ -26,90 +27,122 @@ describe('StorageService', () => {
         },
       ],
     });
-    service = TestBed.inject(StorageService);
-    storage = TestBed.inject(Storage);
 
     jest.clearAllMocks();
   });
 
   it('should be created', () => {
+    service = TestBed.inject(StorageService);
     expect(service).toBeTruthy();
   });
 
-  describe('init()', () => {
-    it('should return a promise', () => {
-      expect(service.init()).toBeInstanceOf(Promise);
-    });
-  });
-
   describe('loadChecklists()', () => {
-    it('should return result of get method of storage api', async () => {
-      await service.init();
-      const result = await service.loadChecklists();
-      expect(getMock).toHaveBeenCalledWith('checklists');
-      expect(result).toEqual(testLoadData);
+    it('should return result of get method of storage api', (done) => {
+      service = TestBed.inject(StorageService);
+      storage = TestBed.inject(Storage);
+
+      service.loadChecklists().subscribe((result) => {
+        expect(getMock).toHaveBeenCalledWith('checklists');
+        expect(result).toEqual(testLoadData);
+        done();
+      });
     });
 
-    it('should return empty array if key is undefined', async () => {
-      jest.spyOn(storage, 'create').mockResolvedValue({
-        get: jest.fn().mockResolvedValue(undefined),
-      } as any);
+    it('should return empty array if key is undefined', (done) => {
+      const undefinedGetMock = jest.fn().mockResolvedValue(undefined);
 
-      await service.init();
-      const result = await service.loadChecklists();
-      expect(result).toEqual([]);
+      TestBed.overrideProvider(Storage, {
+        useValue: {
+          create: jest.fn().mockResolvedValue({
+            set: setMock,
+            get: undefinedGetMock,
+          }),
+        },
+      });
+
+      service = TestBed.inject(StorageService);
+      storage = TestBed.inject(Storage);
+
+      service.loadChecklists().subscribe((result) => {
+        expect(result).toEqual([]);
+        done();
+      });
     });
   });
 
   describe('loadChecklistItems()', () => {
-    it('should return result of get method of storage api', async () => {
-      await service.init();
-      const result = await service.loadChecklistItems();
-      expect(getMock).toHaveBeenCalledWith('checklistItems');
-      expect(result).toEqual(testLoadData);
+    it('should return result of get method of storage api', (done) => {
+      service = TestBed.inject(StorageService);
+      storage = TestBed.inject(Storage);
+
+      service.loadChecklistItems().subscribe((result) => {
+        expect(getMock).toHaveBeenCalledWith('checklistItems');
+        expect(result).toEqual(testLoadData);
+        done();
+      });
     });
 
-    it('should return empty array if key is undefined', async () => {
-      jest.spyOn(storage, 'create').mockResolvedValue({
-        get: jest.fn().mockResolvedValue(undefined),
-      } as any);
+    it('should return empty array if key is undefined', (done) => {
+      const undefinedGetMock = jest.fn().mockResolvedValue(undefined);
 
-      await service.init();
-      const result = await service.loadChecklistItems();
-      expect(result).toEqual([]);
+      TestBed.overrideProvider(Storage, {
+        useValue: {
+          create: jest.fn().mockResolvedValue({
+            set: setMock,
+            get: undefinedGetMock,
+          }),
+        },
+      });
+
+      service = TestBed.inject(StorageService);
+      storage = TestBed.inject(Storage);
+
+      service.loadChecklistItems().subscribe((result) => {
+        expect(result).toEqual([]);
+        done();
+      });
     });
   });
 
   describe('saveChecklists()', () => {
-    it('should pass data to set method of storage api', async () => {
-      await service.init();
-      const test = await service.loadChecklists();
-      const testData = {};
-      await service.saveChecklists(testData as any);
-      expect(setMock).toHaveBeenCalledWith('checklists', testData);
+    beforeEach(() => {
+      service = TestBed.inject(StorageService);
+      storage = TestBed.inject(Storage);
     });
 
-    it('should NOT pass data if checklists have not been loaded yet', async () => {
-      await service.init();
+    it('should pass data to set method of storage api', () => {
       const testData = {};
-      await service.saveChecklists(testData as any);
+
+      service.loadChecklists().subscribe(() => {
+        service.saveChecklists(testData as any);
+        expect(setMock).toHaveBeenCalledWith('checklists', testData);
+      });
+    });
+
+    it('should NOT pass data if checklists have not been loaded yet', () => {
+      const testData = {};
+      service.saveChecklists(testData as any);
       expect(setMock).not.toHaveBeenCalled();
     });
   });
 
   describe('saveChecklistsItems()', () => {
-    it('should pass data to set method of storage api', async () => {
-      await service.init();
-      await service.loadChecklistItems();
+    beforeEach(() => {
+      service = TestBed.inject(StorageService);
+      storage = TestBed.inject(Storage);
+    });
+    it('should pass data to set method of storage api', () => {
       const testData = {};
-      await service.saveChecklistItems(testData as any);
-      expect(setMock).toHaveBeenCalledWith('checklistItems', testData);
+
+      service.loadChecklistItems().subscribe(() => {
+        service.saveChecklistItems(testData as any);
+        expect(setMock).toHaveBeenCalledWith('checklistItems', testData);
+      });
     });
 
-    it('should NOT pass data if checklistItems have not been loaded yet', async () => {
-      await service.init();
+    it('should NOT pass data if checklistItems have not been loaded yet', () => {
       const testData = {};
-      await service.saveChecklistItems(testData as any);
+      service.saveChecklistItems(testData as any);
       expect(setMock).not.toHaveBeenCalled();
     });
   });

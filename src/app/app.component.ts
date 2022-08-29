@@ -11,13 +11,11 @@ import { StorageService } from './shared/data-access/storage.service';
 })
 export class AppComponent implements OnInit {
   constructor(
-    private storageService: StorageService,
     private checklistService: ChecklistService,
     private checklistItemService: ChecklistItemService
   ) {}
 
   async ngOnInit() {
-    await this.storageService.init();
     this.checklistService.load();
     this.checklistItemService.load();
   }

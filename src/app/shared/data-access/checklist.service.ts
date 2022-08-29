@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { filter, map, shareReplay, tap } from 'rxjs/operators';
+import { filter, map, shareReplay, take, tap } from 'rxjs/operators';
 import { ChecklistItemService } from '../../checklist/data-access/checklist-item.service';
 import { Checklist } from '../interfaces/checklist';
 import { StorageService } from './storage.service';
@@ -9,7 +9,7 @@ import { StorageService } from './storage.service';
   providedIn: 'root',
 })
 export class ChecklistService {
-  // This is out data source where we will emit the latest state
+  // This is our data source where we will emit the latest state
   private checklists$ = new BehaviorSubject<Checklist[]>([]);
 
   // This is what we will use to consume the checklist data throughout the app
@@ -25,9 +25,13 @@ export class ChecklistService {
     private checklistItemService: ChecklistItemService
   ) {}
 
-  async load() {
-    const checklists = await this.storageService.loadChecklists();
-    this.checklists$.next(checklists);
+  load() {
+    this.storageService
+      .loadChecklists()
+      .pipe(take(1))
+      .subscribe((checklists) => {
+        this.checklists$.next(checklists);
+      });
   }
 
   getChecklists() {

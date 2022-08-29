@@ -30,26 +30,6 @@ describe('AppComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should call storage init', () => {
-    const storageService = fixture.debugElement.injector.get(StorageService);
-
-    expect(storageService.init).toHaveBeenCalled();
-  });
-
-  it('should not call load methods before storage init resolves', () => {
-    const checklistService =
-      fixture.debugElement.injector.get(ChecklistService);
-
-    const checklistItemService =
-      fixture.debugElement.injector.get(ChecklistItemService);
-
-    jest.resetAllMocks();
-
-    component.ngOnInit();
-    expect(checklistService.load).not.toHaveBeenCalled();
-    expect(checklistItemService.load).not.toHaveBeenCalled();
-  });
-
   it('should call load method for checklist service', async () => {
     const checklistService =
       fixture.debugElement.injector.get(ChecklistService);

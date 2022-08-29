@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { subscribeSpyTo } from '@hirez_io/observer-spy';
-import { combineLatest } from 'rxjs';
+import { combineLatest, of } from 'rxjs';
 import { StorageService } from '../../shared/data-access/storage.service';
 
 import { ChecklistItemService } from './checklist-item.service';
@@ -39,19 +39,19 @@ describe('ChecklistItemService', () => {
   });
 
   describe('load()', () => {
-    it('should trigger result from loadChecklistItems from storage service to emit on checklistItems$', async () => {
+    it('should trigger result from loadChecklistItems from storage service to emit on checklistItems$', () => {
       const testLoadData = [
         { id: 'xyz', checklistId: '1', title: 'abc', checked: false },
       ];
 
       jest
         .spyOn(storageService, 'loadChecklistItems')
-        .mockResolvedValue(testLoadData);
+        .mockReturnValue(of(testLoadData));
 
       const observerSpy = subscribeSpyTo(
         service.getItemsByChecklistId(testLoadData[0].checklistId)
       );
-      await service.load();
+      service.load();
 
       expect(observerSpy.getLastValue()).toEqual(testLoadData);
     });
