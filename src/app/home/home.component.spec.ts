@@ -17,19 +17,19 @@ import {
 import { of, Subject } from 'rxjs';
 import { ChecklistService } from '../shared/data-access/checklist.service';
 
-import { HomePage } from './home.page';
+import { HomeComponent } from './home.component';
 import { MockChecklistComponent } from './ui/checklist-list/checklist-list.component.spec';
 
-describe('HomePage', () => {
-  let component: HomePage;
-  let fixture: ComponentFixture<HomePage>;
+describe('HomeComponent', () => {
+  let component: HomeComponent;
+  let fixture: ComponentFixture<HomeComponent>;
 
   const presentMock = jest.fn();
   const mockChecklistData = new Subject();
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [HomePage, MockChecklistComponent],
+      declarations: [HomeComponent, MockChecklistComponent],
       imports: [IonicModule.forRoot(), ReactiveFormsModule],
       providers: [
         {
@@ -64,7 +64,7 @@ describe('HomePage', () => {
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(HomePage);
+    fixture = TestBed.createComponent(HomeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
 
