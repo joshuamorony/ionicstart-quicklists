@@ -32,7 +32,7 @@ export class AppComponent implements OnInit {
     private checklistItemService: ChecklistItemService
   ) {}
 
-  async ngOnInit() {
+  ngOnInit() {
     this.checklistService.load();
     this.checklistItemService.load();
   }
