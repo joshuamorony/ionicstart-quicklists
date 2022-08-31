@@ -14,7 +14,7 @@ import {
   IonRouterOutlet,
   ModalController,
 } from '@ionic/angular';
-import { of, Subject } from 'rxjs';
+import { BehaviorSubject, of, Subject } from 'rxjs';
 import { ChecklistService } from '../shared/data-access/checklist.service';
 
 import { HomeComponent } from './home.component';
@@ -25,7 +25,7 @@ describe('HomeComponent', () => {
   let fixture: ComponentFixture<HomeComponent>;
 
   const presentMock = jest.fn();
-  const mockChecklistData = new Subject();
+  const mockChecklistData = new BehaviorSubject([{}]);
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({

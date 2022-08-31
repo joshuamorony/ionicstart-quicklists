@@ -91,7 +91,7 @@ import { Checklist } from 'src/app/shared/interfaces/checklist';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChecklistListComponent {
-  @Input() checklists!: Checklist[] | null;
+  @Input() checklists!: Checklist[];
   @Output() delete = new EventEmitter<string>();
   @Output() edit = new EventEmitter<Checklist>();
 

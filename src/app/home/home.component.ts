@@ -47,7 +47,8 @@ import { ChecklistListComponentModule } from './ui/checklist-list/checklist-list
       </ion-header>
 
       <app-checklist-list
-        [checklists]="checklists$ | async"
+        *ngIf="checklists$ | async as checklists"
+        [checklists]="checklists"
         (delete)="deleteChecklist($event)"
         (edit)="openEditModal($event)"
       ></app-checklist-list>
