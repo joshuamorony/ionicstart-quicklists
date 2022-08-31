@@ -5,13 +5,15 @@ import {
   OnInit,
 } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { RouteReuseStrategy } from '@angular/router';
+import {
+  PreloadAllModules,
+  RouteReuseStrategy,
+  RouterModule,
+} from '@angular/router';
 import { ChecklistItemService } from './checklist/data-access/checklist-item.service';
 import { ChecklistService } from './shared/data-access/checklist.service';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
-
-import { AppRoutingModule } from './app-routing.module';
 
 import { Drivers } from '@ionic/storage';
 import { IonicStorageModule } from '@ionic/storage-angular';
@@ -44,7 +46,6 @@ export class AppComponent implements OnInit {
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
-    AppRoutingModule,
     IonicStorageModule.forRoot({
       driverOrder: [
         // eslint-disable-next-line no-underscore-dangle
@@ -53,6 +54,28 @@ export class AppComponent implements OnInit {
         Drivers.LocalStorage,
       ],
     }),
+    RouterModule.forRoot(
+      [
+        {
+          path: 'home',
+          loadChildren: () =>
+            import('./home/home.component').then((m) => m.HomeComponentModule),
+        },
+        {
+          path: '',
+          redirectTo: 'home',
+          pathMatch: 'full',
+        },
+        {
+          path: 'checklist/:id',
+          loadChildren: () =>
+            import('./checklist/checklist.component').then(
+              (m) => m.ChecklistComponentModule
+            ),
+        },
+      ],
+      { preloadingStrategy: PreloadAllModules }
+    ),
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
