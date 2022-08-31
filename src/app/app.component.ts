@@ -46,8 +46,12 @@ export class AppComponent implements OnInit {
     IonicModule.forRoot(),
     AppRoutingModule,
     IonicStorageModule.forRoot({
-      // eslint-disable-next-line no-underscore-dangle
-      driverOrder: [CordovaSQLiteDriver._driver, Drivers.IndexedDB],
+      driverOrder: [
+        // eslint-disable-next-line no-underscore-dangle
+        CordovaSQLiteDriver._driver,
+        Drivers.IndexedDB,
+        Drivers.LocalStorage,
+      ],
     }),
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],

@@ -51,34 +51,34 @@ import { ChecklistListComponentModule } from './ui/checklist-list/checklist-list
         (delete)="deleteChecklist($event)"
         (edit)="openEditModal($event)"
       ></app-checklist-list>
-    </ion-content>
 
-    <ion-modal
-      *ngIf="{
-        checklistIdBeingEdited: checklistIdBeingEdited$ | async,
-        isOpen: formModalIsOpen$ | async
-      } as vm"
-      [isOpen]="vm.isOpen"
-      [canDismiss]="true"
-      [presentingElement]="routerOutlet.nativeEl"
-      (ionModalDidDismiss)="
-        formModalIsOpen$.next(false); checklistIdBeingEdited$.next(null)
-      "
-    >
-      <ng-template>
-        <app-form-modal
-          [title]="
-            vm.checklistIdBeingEdited ? 'Edit checklist' : 'Create checklist'
-          "
-          [formGroup]="checklistForm"
-          (save)="
-            vm.checklistIdBeingEdited
-              ? editChecklist(vm.checklistIdBeingEdited)
-              : addChecklist()
-          "
-        ></app-form-modal>
-      </ng-template>
-    </ion-modal>
+      <ion-modal
+        *ngIf="{
+          checklistIdBeingEdited: checklistIdBeingEdited$ | async,
+          isOpen: formModalIsOpen$ | async
+        } as vm"
+        [isOpen]="vm.isOpen"
+        [canDismiss]="true"
+        [presentingElement]="routerOutlet.nativeEl"
+        (ionModalDidDismiss)="
+          formModalIsOpen$.next(false); checklistIdBeingEdited$.next(null)
+        "
+      >
+        <ng-template>
+          <app-form-modal
+            [title]="
+              vm.checklistIdBeingEdited ? 'Edit checklist' : 'Create checklist'
+            "
+            [formGroup]="checklistForm"
+            (save)="
+              vm.checklistIdBeingEdited
+                ? editChecklist(vm.checklistIdBeingEdited)
+                : addChecklist()
+            "
+          ></app-form-modal>
+        </ng-template>
+      </ion-modal>
+    </ion-content>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -35,30 +35,30 @@ import { ChecklistItemListComponentModule } from './ui/checklist-item-list/check
           (delete)="deleteChecklistItem($event)"
           (edit)="openEditModal($event)"
         ></app-checklist-item-list>
-      </ion-content>
 
-      <ion-modal
-        [isOpen]="vm.formModalIsOpen"
-        [presentingElement]="routerOutlet.nativeEl"
-        [canDismiss]="true"
-        (ionModalDidDismiss)="
-          checklistItemIdBeingEdited$.next(null); formModalIsOpen$.next(false)
-        "
-      >
-        <ng-template>
-          <app-form-modal
-            [title]="
-              vm.checklistItemIdBeingEdited ? 'Edit item' : 'Create item'
-            "
-            [formGroup]="checklistItemForm"
-            (save)="
-              vm.checklistItemIdBeingEdited
-                ? editChecklistItem(vm.checklistItemIdBeingEdited)
-                : addChecklistItem(vm.checklist.id)
-            "
-          ></app-form-modal>
-        </ng-template>
-      </ion-modal>
+        <ion-modal
+          [isOpen]="vm.formModalIsOpen"
+          [presentingElement]="routerOutlet.nativeEl"
+          [canDismiss]="true"
+          (ionModalDidDismiss)="
+            checklistItemIdBeingEdited$.next(null); formModalIsOpen$.next(false)
+          "
+        >
+          <ng-template>
+            <app-form-modal
+              [title]="
+                vm.checklistItemIdBeingEdited ? 'Edit item' : 'Create item'
+              "
+              [formGroup]="checklistItemForm"
+              (save)="
+                vm.checklistItemIdBeingEdited
+                  ? editChecklistItem(vm.checklistItemIdBeingEdited)
+                  : addChecklistItem(vm.checklist.id)
+              "
+            ></app-form-modal>
+          </ng-template>
+        </ion-modal>
+      </ion-content>
     </ng-container>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
