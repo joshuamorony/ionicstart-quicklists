@@ -16,8 +16,9 @@ import {
 import { BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { ChecklistService } from '../shared/data-access/checklist.service';
-import { Checklist } from '../shared/interfaces/checklist';
+import { AddChecklist, Checklist } from '../shared/interfaces/checklist';
 import { FormModalComponentModule } from '../shared/ui/form-modal/form-modal.component';
+import { nonNullObject } from '../shared/utils/ts-guards';
 import { ChecklistListComponentModule } from './ui/checklist-list/checklist-list.component';
 
 @Component({
@@ -109,7 +110,11 @@ export class HomeComponent {
   ) {}
 
   addChecklist() {
-    this.checklistService.add(this.checklistForm.value);
+    const formValues = this.checklistForm.value;
+
+    if (nonNullObject<AddChecklist>(formValues)) {
+      this.checklistService.add(formValues);
+    }
   }
 
   openEditModal(checklist: Checklist) {

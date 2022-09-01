@@ -4,3 +4,5 @@ export interface ChecklistItem {
   title: string;
   checked: boolean;
 }
+
+export type AddChecklistItem = Pick<ChecklistItem, 'title'>;

@@ -2,7 +2,10 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { map, take, tap } from 'rxjs/operators';
 import { StorageService } from '../../shared/data-access/storage.service';
-import { ChecklistItem } from '../../shared/interfaces/checklist-item';
+import {
+  AddChecklistItem,
+  ChecklistItem,
+} from '../../shared/interfaces/checklist-item';
 
 @Injectable({
   providedIn: 'root',
@@ -46,7 +49,7 @@ export class ChecklistItemService {
     this.checklistItems$.next(newItems);
   }
 
-  add(item: Pick<ChecklistItem, 'title'>, checklistId: string) {
+  add(item: AddChecklistItem, checklistId: string) {
     const newItem = {
       id: Date.now().toString(),
       checklistId,
@@ -57,7 +60,7 @@ export class ChecklistItemService {
     this.checklistItems$.next([...this.checklistItems$.value, newItem]);
   }
 
-  update(id: string, editedItem: Pick<ChecklistItem, 'title'>) {
+  update(id: string, editedItem: AddChecklistItem) {
     const newItems = this.checklistItems$.value.map((item) =>
       item.id === id ? { ...item, title: editedItem.title } : item
     );

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { filter, map, shareReplay, take, tap } from 'rxjs/operators';
 import { ChecklistItemService } from '../../checklist/data-access/checklist-item.service';
-import { Checklist } from '../interfaces/checklist';
+import { AddChecklist, Checklist } from '../interfaces/checklist';
 import { StorageService } from './storage.service';
 
 @Injectable({
@@ -45,7 +45,7 @@ export class ChecklistService {
     );
   }
 
-  add(checklist: Pick<Checklist, 'title'>) {
+  add(checklist: AddChecklist) {
     const newChecklist = {
       ...checklist,
       id: this.generateSlug(checklist.title),
@@ -64,7 +64,7 @@ export class ChecklistService {
     this.checklists$.next(modifiedChecklists);
   }
 
-  update(id: string, editedData: Pick<Checklist, 'title'>) {
+  update(id: string, editedData: AddChecklist) {
     const modifiedChecklists = this.checklists$.value.map((checklist) =>
       checklist.id === id
         ? { ...checklist, title: editedData.title }
