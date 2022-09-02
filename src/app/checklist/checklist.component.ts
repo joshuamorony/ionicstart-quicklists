@@ -12,8 +12,12 @@ import { BehaviorSubject, combineLatest } from 'rxjs';
 import { filter, map, switchMap, tap } from 'rxjs/operators';
 import { ChecklistService } from '../shared/data-access/checklist.service';
 import { Checklist } from '../shared/interfaces/checklist';
-import { ChecklistItem } from '../shared/interfaces/checklist-item';
+import {
+  AddChecklistItem,
+  ChecklistItem,
+} from '../shared/interfaces/checklist-item';
 import { FormModalComponentModule } from '../shared/ui/form-modal/form-modal.component';
+import { nonNullObject } from '../shared/utils/ts-guards';
 import { ChecklistItemService } from './data-access/checklist-item.service';
 import { ChecklistItemHeaderModule } from './ui/checklist-item-header/checklist-item-header.component';
 import { ChecklistItemListComponentModule } from './ui/checklist-item-list/checklist-item-list.component';
@@ -111,7 +115,10 @@ export class ChecklistComponent {
   ) {}
 
   addChecklistItem(checklistId: string) {
-    this.checklistItemService.add(this.checklistItemForm.value, checklistId);
+    const formValues = this.checklistItemForm.value;
+    if (nonNullObject<AddChecklistItem>(formValues)) {
+      this.checklistItemService.add(formValues, checklistId);
+    }
   }
 
   editChecklistItem(checklistItemId: string) {
