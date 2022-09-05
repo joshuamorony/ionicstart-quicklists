@@ -122,10 +122,10 @@ export class ChecklistComponent {
   }
 
   editChecklistItem(checklistItemId: string) {
-    this.checklistItemService.update(
-      checklistItemId,
-      this.checklistItemForm.value
-    );
+    const formValues = this.checklistItemForm.value;
+    if (nonNullObject<AddChecklistItem>(formValues)) {
+      this.checklistItemService.update(checklistItemId, formValues);
+    }
   }
 
   openEditModal(checklistItem: ChecklistItem) {
