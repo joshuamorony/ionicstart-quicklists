@@ -93,7 +93,7 @@ export class HomeComponent {
   checklists$ = this.checklistService.getChecklists().pipe(
     tap(() => {
       setTimeout(() => {
-        this.ionContent?.scrollToBottom(200);
+        this.ionContent.scrollToBottom(200);
       }, 0);
     })
   );
@@ -126,7 +126,11 @@ export class HomeComponent {
   }
 
   editChecklist(checklistId: string) {
-    this.checklistService.update(checklistId, this.checklistForm.value);
+    const formValues = this.checklistForm.value;
+
+    if (nonNullObject<AddChecklist>(formValues)) {
+      this.checklistService.update(checklistId, formValues);
+    }
   }
 
   async deleteChecklist(id: string) {

@@ -85,7 +85,7 @@ export class ChecklistComponent {
         this.checklistItemService
           .getItemsByChecklistId(params.get('id') as string)
           .pipe(
-            tap(() => setTimeout(() => this.ionContent?.scrollToBottom(200), 0))
+            tap(() => setTimeout(() => this.ionContent.scrollToBottom(200), 0))
           ),
       ])
     )

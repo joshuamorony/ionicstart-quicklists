@@ -51,7 +51,7 @@ import { ChecklistItem } from '../../../shared/interfaces/checklist-item';
         </ion-item-options>
       </ion-item-sliding>
       <ion-card
-        *ngIf="checklistItems?.length === 0"
+        *ngIf="checklistItems.length === 0"
         data-test="no-items-message"
       >
         <ion-card-header>
