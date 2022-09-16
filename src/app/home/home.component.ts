@@ -18,7 +18,6 @@ import { tap } from 'rxjs/operators';
 import { ChecklistService } from '../shared/data-access/checklist.service';
 import { AddChecklist, Checklist } from '../shared/interfaces/checklist';
 import { FormModalComponentModule } from '../shared/ui/form-modal/form-modal.component';
-import { nonNullObject } from '../shared/utils/ts-guards';
 import { ChecklistListComponentModule } from './ui/checklist-list/checklist-list.component';
 
 @Component({
@@ -98,7 +97,7 @@ export class HomeComponent {
     })
   );
 
-  checklistForm = this.fb.group({
+  checklistForm = this.fb.nonNullable.group({
     title: ['', Validators.required],
   });
 
@@ -110,11 +109,7 @@ export class HomeComponent {
   ) {}
 
   addChecklist() {
-    const formValues = this.checklistForm.value;
-
-    if (nonNullObject<AddChecklist>(formValues)) {
-      this.checklistService.add(formValues);
-    }
+    this.checklistService.add(this.checklistForm.getRawValue());
   }
 
   openEditModal(checklist: Checklist) {
@@ -126,11 +121,7 @@ export class HomeComponent {
   }
 
   editChecklist(checklistId: string) {
-    const formValues = this.checklistForm.value;
-
-    if (nonNullObject<AddChecklist>(formValues)) {
-      this.checklistService.update(checklistId, formValues);
-    }
+    this.checklistService.update(checklistId, this.checklistForm.getRawValue());
   }
 
   async deleteChecklist(id: string) {

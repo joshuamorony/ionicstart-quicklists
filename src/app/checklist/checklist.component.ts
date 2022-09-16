@@ -17,7 +17,6 @@ import {
   ChecklistItem,
 } from '../shared/interfaces/checklist-item';
 import { FormModalComponentModule } from '../shared/ui/form-modal/form-modal.component';
-import { nonNullObject } from '../shared/utils/ts-guards';
 import { ChecklistItemService } from './data-access/checklist-item.service';
 import { ChecklistItemHeaderModule } from './ui/checklist-item-header/checklist-item-header.component';
 import { ChecklistItemListComponentModule } from './ui/checklist-item-list/checklist-item-list.component';
@@ -70,7 +69,7 @@ import { ChecklistItemListComponentModule } from './ui/checklist-item-list/check
 export class ChecklistComponent {
   @ViewChild(IonContent) ionContent!: IonContent;
 
-  checklistItemForm = this.fb.group({
+  checklistItemForm = this.fb.nonNullable.group({
     title: ['', Validators.required],
   });
 
@@ -115,17 +114,17 @@ export class ChecklistComponent {
   ) {}
 
   addChecklistItem(checklistId: string) {
-    const formValues = this.checklistItemForm.value;
-    if (nonNullObject<AddChecklistItem>(formValues)) {
-      this.checklistItemService.add(formValues, checklistId);
-    }
+    this.checklistItemService.add(
+      this.checklistItemForm.getRawValue(),
+      checklistId
+    );
   }
 
   editChecklistItem(checklistItemId: string) {
-    const formValues = this.checklistItemForm.value;
-    if (nonNullObject<AddChecklistItem>(formValues)) {
-      this.checklistItemService.update(checklistItemId, formValues);
-    }
+    this.checklistItemService.update(
+      checklistItemId,
+      this.checklistItemForm.getRawValue()
+    );
   }
 
   openEditModal(checklistItem: ChecklistItem) {
