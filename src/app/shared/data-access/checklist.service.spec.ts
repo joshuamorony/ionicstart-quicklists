@@ -32,7 +32,7 @@ describe('ChecklistService', () => {
         {
           provide: StorageService,
           useValue: {
-            loadChecklists: jest.fn().mockReturnValue(of(testLoadData)),
+            loadChecklists$: of(testLoadData),
             saveChecklists: jest.fn(),
           },
         },
@@ -49,7 +49,7 @@ describe('ChecklistService', () => {
   });
 
   describe('load()', () => {
-    it('should trigger result from loadChecklists from storage service to emit on getChecklists()', async () => {
+    it('should trigger result from loadChecklists$ from storage service to emit on getChecklists()', async () => {
       const observerSpy = subscribeSpyTo(service.getChecklists());
       service.load();
 

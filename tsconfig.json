@@ -16,6 +16,7 @@
     "types": ["jest"],
     "strict": true
   },
+  "include": ["src/**/*"],
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,

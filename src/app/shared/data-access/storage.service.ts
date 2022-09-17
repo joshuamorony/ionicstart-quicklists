@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
-import { from, Observable } from 'rxjs';
+import { from } from 'rxjs';
 import { map, shareReplay, switchMap, take } from 'rxjs/operators';
 import { Checklist } from '../interfaces/checklist';
 import { ChecklistItem } from '../interfaces/checklist-item';
@@ -9,28 +9,26 @@ import { ChecklistItem } from '../interfaces/checklist-item';
   providedIn: 'root',
 })
 export class StorageService {
-  private storage$ = from(this.ionicStorage.create()).pipe(shareReplay(1));
+  storage$ = from(this.ionicStorage.create()).pipe(shareReplay(1));
+
+  loadChecklists$ = this.storage$.pipe(
+    switchMap((storage) => from(storage.get('checklists'))),
+    map((checklists) => checklists ?? []),
+    shareReplay(1)
+  );
+
+  loadChecklistItems$ = this.storage$.pipe(
+    switchMap((storage) => from(storage.get('checklistItems'))),
+    map((checklistItems) => checklistItems ?? []),
+    shareReplay(1)
+  );
 
   constructor(private ionicStorage: Storage) {}
 
-  loadChecklists(): Observable<Checklist[]> {
-    return this.storage$.pipe(
-      switchMap((storage) => from(storage.get('checklists'))),
-      map((checklists) => checklists ?? [])
-    );
-  }
-
-  loadChecklistItems(): Observable<ChecklistItem[]> {
-    return this.storage$.pipe(
-      switchMap((storage) => from(storage.get('checklistItems'))),
-      map((checklistItems) => checklistItems ?? [])
-    );
-  }
-
   saveChecklists(checklists: Checklist[]) {
-    // We don't need/use the loadChecklists() stream here we just want to make
+    // We don't need/use the loadChecklists$ stream here we just want to make
     // sure it has emitted before we try to save data to storage
-    this.loadChecklists()
+    this.loadChecklists$
       .pipe(
         switchMap(() => this.storage$),
         take(1)
@@ -41,7 +39,7 @@ export class StorageService {
   }
 
   saveChecklistItems(checklistItems: ChecklistItem[]) {
-    this.loadChecklistItems()
+    this.loadChecklistItems$
       .pipe(
         switchMap(() => this.storage$),
         take(1)

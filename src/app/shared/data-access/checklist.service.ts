@@ -26,8 +26,7 @@ export class ChecklistService {
   ) {}
 
   load() {
-    this.storageService
-      .loadChecklists()
+    this.storageService.loadChecklists$
       .pipe(take(1))
       .subscribe((checklists) => {
         this.checklists$.next(checklists);

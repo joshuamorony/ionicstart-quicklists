@@ -36,12 +36,12 @@ describe('StorageService', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('loadChecklists()', () => {
+  describe('loadChecklists$', () => {
     it('should return result of get method of storage api', (done) => {
       service = TestBed.inject(StorageService);
       storage = TestBed.inject(Storage);
 
-      service.loadChecklists().subscribe((result) => {
+      service.loadChecklists$.subscribe((result) => {
         expect(getMock).toHaveBeenCalledWith('checklists');
         expect(result).toEqual(testLoadData);
         done();
@@ -63,19 +63,19 @@ describe('StorageService', () => {
       service = TestBed.inject(StorageService);
       storage = TestBed.inject(Storage);
 
-      service.loadChecklists().subscribe((result) => {
+      service.loadChecklists$.subscribe((result) => {
         expect(result).toEqual([]);
         done();
       });
     });
   });
 
-  describe('loadChecklistItems()', () => {
+  describe('loadChecklistItems$', () => {
     it('should return result of get method of storage api', (done) => {
       service = TestBed.inject(StorageService);
       storage = TestBed.inject(Storage);
 
-      service.loadChecklistItems().subscribe((result) => {
+      service.loadChecklistItems$.subscribe((result) => {
         expect(getMock).toHaveBeenCalledWith('checklistItems');
         expect(result).toEqual(testLoadData);
         done();
@@ -97,7 +97,7 @@ describe('StorageService', () => {
       service = TestBed.inject(StorageService);
       storage = TestBed.inject(Storage);
 
-      service.loadChecklistItems().subscribe((result) => {
+      service.loadChecklistItems$.subscribe((result) => {
         expect(result).toEqual([]);
         done();
       });
@@ -113,7 +113,7 @@ describe('StorageService', () => {
     it('should pass data to set method of storage api', () => {
       const testData = {};
 
-      service.loadChecklists().subscribe(() => {
+      service.loadChecklists$.subscribe(() => {
         service.saveChecklists(testData as any);
         expect(setMock).toHaveBeenCalledWith('checklists', testData);
       });
@@ -134,7 +134,7 @@ describe('StorageService', () => {
     it('should pass data to set method of storage api', () => {
       const testData = {};
 
-      service.loadChecklistItems().subscribe(() => {
+      service.loadChecklistItems$.subscribe(() => {
         service.saveChecklistItems(testData as any);
         expect(setMock).toHaveBeenCalledWith('checklistItems', testData);
       });

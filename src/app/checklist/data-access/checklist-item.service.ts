@@ -16,8 +16,7 @@ export class ChecklistItemService {
   constructor(private storageService: StorageService) {}
 
   load() {
-    this.storageService
-      .loadChecklistItems()
+    this.storageService.loadChecklistItems$
       .pipe(take(1))
       .subscribe((checklistItems) => {
         this.checklistItems$.next(checklistItems);

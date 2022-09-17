@@ -44,9 +44,7 @@ describe('ChecklistItemService', () => {
         { id: 'xyz', checklistId: '1', title: 'abc', checked: false },
       ];
 
-      jest
-        .spyOn(storageService, 'loadChecklistItems')
-        .mockReturnValue(of(testLoadData));
+      storageService.loadChecklistItems$ = of(testLoadData);
 
       const observerSpy = subscribeSpyTo(
         service.getItemsByChecklistId(testLoadData[0].checklistId)
