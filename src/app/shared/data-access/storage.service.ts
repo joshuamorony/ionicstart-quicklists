@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
-import { from } from 'rxjs';
+import { from, Observable } from 'rxjs';
 import { map, shareReplay, switchMap, take } from 'rxjs/operators';
 import { Checklist } from '../interfaces/checklist';
 import { ChecklistItem } from '../interfaces/checklist-item';
@@ -11,13 +11,13 @@ import { ChecklistItem } from '../interfaces/checklist-item';
 export class StorageService {
   storage$ = from(this.ionicStorage.create()).pipe(shareReplay(1));
 
-  loadChecklists$ = this.storage$.pipe(
+  loadChecklists$: Observable<Checklist[]> = this.storage$.pipe(
     switchMap((storage) => from(storage.get('checklists'))),
     map((checklists) => checklists ?? []),
     shareReplay(1)
   );
 
-  loadChecklistItems$ = this.storage$.pipe(
+  loadChecklistItems$: Observable<ChecklistItem[]> = this.storage$.pipe(
     switchMap((storage) => from(storage.get('checklistItems'))),
     map((checklistItems) => checklistItems ?? []),
     shareReplay(1)
