@@ -121,7 +121,10 @@ export class HomeComponent {
   }
 
   editChecklist(checklistId: string) {
-    this.checklistService.update(checklistId, this.checklistForm.getRawValue());
+    this.checklistService.update({
+      id: checklistId,
+      editedData: this.checklistForm.getRawValue(),
+    });
   }
 
   async deleteChecklist(id: string) {
